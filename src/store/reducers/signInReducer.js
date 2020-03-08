@@ -1,4 +1,4 @@
-import { SIGNIN_ERROR, SIGNIN_SUCCESS } from '../actions/constants/action-types';
+import { SIGNIN_ERROR, SIGNIN_SUCCESS, SIGNIN_START } from '../actions/constants/action-types';
 
 const initialState = {
     error: '',

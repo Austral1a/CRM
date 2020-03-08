@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom';
 import App from './Components/App';
 import * as serviceWorker from './serviceWorker';
 import 'materialize-css/dist/js/materialize.min'
-
-
 import firebase from 'firebase/app';
 import 'firebase/auth'
 import { Provider } from 'react-redux';
 //import { createStore, applyMiddleware } from 'redux';
 import store from './store/index';
 
+
+// TODO: Заныкать config
 const firebaseConfig = {
     apiKey: "AIzaSyClWeGiKPJOiS99S0cS1WyvvRluLpcevWM",
     authDomain: "react-crm-sys.firebaseapp.com",

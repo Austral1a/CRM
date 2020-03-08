@@ -1,18 +1,20 @@
 import {
     SIGNIN_ERROR,
     SIGNIN_SUCCESS,
+    SIGNIN_START,
     CURRENT_USER_NOT_ANONYMOUS,
     CURRENT_USER_ANONYMOUS
 } from './constants/action-types';
 import firebase from 'firebase';
 import auth from 'firebase/auth';
+
 // action creator as well, just with async doings, 
 //  that means action-creator returns a func rather than action
 export const signInUser = (email, password) => {
     return (dispatch) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((data) => {
-                dispatch(signInUserSuccess())
+            .then(() => {
+                dispatch(signInUserSuccess());
             })
             .catch((error) => {
                 dispatch(signInUserError(error.message))
@@ -31,16 +33,17 @@ export const signInUserSuccess = () => ({
 });
 
 
-
 // chech if the user is logged in.
 export const currentSignedInUser = () => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                console.log(user.email)
                 dispatch(currentUserNotAnonymous(user));
             } else {
-                dispatch(currentUserIsAnonymous());
+                const user = {
+                    email: 'none',
+                }
+                dispatch(currentUserIsAnonymous(user));
             }
         });
     };
@@ -51,6 +54,7 @@ export const currentUserNotAnonymous = (user) => ({
     user,
 });
 
-export const currentUserIsAnonymous = () => ({
+export const currentUserIsAnonymous = (user) => ({
     type: CURRENT_USER_ANONYMOUS,
+    user,
 });

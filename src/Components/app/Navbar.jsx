@@ -13,7 +13,6 @@ import { currentSignedInUser } from '../../store/actions/index';
 import '../../styles/navbarStyle/navbar.css'
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         user: state.currUserReducer.user,
         bool: state.currUserReducer.bool

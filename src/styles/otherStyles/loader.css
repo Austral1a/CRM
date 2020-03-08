@@ -1,0 +1,34 @@
+.loader {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  border: 3px solid #fff;
+  margin: 0 auto;
+  border-color: teal;
+  border-radius: 50%;
+  border-bottom-color: transparent;
+  -webkit-animation: 1.1s loader ease-out infinite;
+          animation: 1.1s loader ease-out infinite;
+}
+
+@-webkit-keyframes loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+/*# sourceMappingURL=loader.css.map */

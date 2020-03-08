@@ -1,15 +1,27 @@
 import React from 'react';
 import '../../styles/UserTemplateStyle/user.css'
-const User = (props) => {
+import '../../styles/otherStyles/loader.css'
+import { connect } from 'react-redux';
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        user: state.currUserReducer.user
+    }
+}
+
+const ConnectedUser = ({ user }) => {
 
     return (
         <div className='user-information'>
-            {props.user_img}
-            {props.user_email}
-            {props.user_name}
+            <h5>{user.email}</h5>
+            <div className="loader"></div>
         </div>
     )
 
 }
+
+const User = connect(
+    mapStateToProps
+)(ConnectedUser);
 
 export default User;

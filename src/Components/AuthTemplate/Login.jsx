@@ -11,11 +11,12 @@ import {
 import { connect } from 'react-redux';
 import { signInUser } from '../../store/actions/index';
 import { currentSignedInUser } from '../../store/actions/index';
-
+import '../../styles/otherStyles/loader.css';
 
 const mapStateToProps = (state) => {
     return {
         error: state.signInReducer.error,
+        bool: state.currUserReducer.bool
     }
 };
 
@@ -29,7 +30,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 // TODO: При успешном логине перезагружать страницу
-const ConnectedLogin = ({ signUserIn, currUser, error, }) => {
+const ConnectedLogin = ({ signUserIn, currUser, error, bool }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -68,6 +69,7 @@ const ConnectedLogin = ({ signUserIn, currUser, error, }) => {
             </form>
             <Switch>
                 <Route path="/login">
+                    {bool ? <Redirect to='/you' /> : null}
                 </Route>
             </Switch>
         </>

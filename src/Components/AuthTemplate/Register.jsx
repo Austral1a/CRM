@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../../styles/templatesStyle/auth.css'
 import firebase from 'firebase/app';
 import 'firebase/auth'
 
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+
 import { connect } from 'react-redux'
 const mapStateToProps = (state) => {
     return {
-        bool: state.currUserReducer.bool
+        bool: state.currUserReducer.bool,
     }
 }
 
@@ -18,17 +19,31 @@ const ConnectedRegister = ({ bool }) => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
 
+    const writeUserData = async (uid) => {
+        firebase.database().ref(`users/${username}/info`).set({
+            bill: 100,
+            username,
+            email,
+            password,
+            uid: uid
+        })
+    };
+
+    const getUid = () => {
+        const user = firebase.auth().currentUser;
+        return user ? user.uid : null;
+    }
+
     return (
         <>
             <div className="row center">
                 <form
                     className="col s12"
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                         e.preventDefault();
-                        firebase.auth().createUserWithEmailAndPassword(email, password)
-                            .catch((error) => {
-                                console.log(error.code + ' ' + error.message);
-                            });
+                        await firebase.auth().createUserWithEmailAndPassword(email, password);
+                        const uid = getUid();
+                        await writeUserData(uid);
                     }}>
                     <h2>Регистрация</h2>
                     <div className="wrap">

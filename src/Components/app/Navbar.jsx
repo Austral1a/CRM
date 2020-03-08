@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Profiler, useLayoutEffect } from 'react';
 import {
     Link,
     Switch,
@@ -10,6 +10,7 @@ import firebase from 'firebase';
 import auth from 'firebase/auth';
 import { connect } from 'react-redux';
 import { currentSignedInUser } from '../../store/actions/index';
+import dateFilter from '../../filters/dateFilter';
 import '../../styles/navbarStyle/navbar.css'
 
 const mapStateToProps = (state) => {
@@ -26,11 +27,16 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 let ConnectedNavbar = ({ currUser, user, bool }) => {
-
+    const [currDateTime, setCurrDateTime] = useState('');
     useEffect(() => {
         currUser();
     });
 
+    useLayoutEffect(() => {
+        setInterval(() => {
+            setCurrDateTime(dateFilter(new Date()));
+        }, 1000)
+    })
     return (
         <nav className="nav-extend teal">
             <div className="nav-content">
@@ -40,6 +46,22 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                             data-target="slide-out"
                             className="sidenav-trigger show-on-large"><i className="material-icons">menu</i></a>
                     </li>
+                    <Profiler id='current-date' callback={(id,
+                        phase,
+                        actualDuration,
+                        baseDuration,
+                        startTime,
+                        commitTime,
+                        interactions) => console.log(
+                            id,
+                            phase,
+                            actualDuration,
+                            baseDuration,
+                            startTime,
+                            commitTime,
+                            interactions)}>
+                        {String(currDateTime)}
+                    </Profiler>
                     {!bool ? (
                         <>
                             <li className="right">

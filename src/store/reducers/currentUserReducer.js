@@ -2,7 +2,8 @@ import { CURRENT_USER_NOT_ANONYMOUS, CURRENT_USER_ANONYMOUS } from '../actions/c
 
 const initialState = {
     user: '',
-    bool: false
+    bool: false,
+    userUid: ''
 };
 
 const currUserReducer = (state = initialState, action) => {
@@ -10,12 +11,14 @@ const currUserReducer = (state = initialState, action) => {
         case CURRENT_USER_NOT_ANONYMOUS:
             return Object.assign({}, state, {
                 user: action.user,
-                bool: true
+                bool: true,
+                userUid: action.user.uid
             });
         case CURRENT_USER_ANONYMOUS:
             return Object.assign({}, state, {
                 user: '',
-                bool: false
+                bool: false,
+                userUid: ''
             });
         default:
             return state;

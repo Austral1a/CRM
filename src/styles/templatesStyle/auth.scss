@@ -1,0 +1,22 @@
+$background: #CDCDCD;
+$text-color: #fff;
+body {
+    background: $background;
+    color: $text-color;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    align-items: center;
+    margin-top: 8rem;
+    .wrap > * {
+        width: 18rem;
+    }
+    .wrap {
+        background-color: whitesmoke;
+        padding: 5rem 3rem 5rem 3rem;
+    }
+}

@@ -20,7 +20,7 @@ const ConnectedRegister = ({ bool }) => {
     const [username, setUsername] = useState('');
 
     const writeUserData = async (uid) => {
-        firebase.database().ref(`users/${username}/info`).set({
+        firebase.database().ref(`users/${uid}/info`).set({
             bill: 100,
             username,
             email,

@@ -65,10 +65,10 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                     {!bool ? (
                         <>
                             <li className="right">
-                                <Link exact to='/login'>Login</Link>
+                                <Link exact='true' to='/login'>Login</Link>
                             </li>
                             <li className="right">
-                                <Link exact to="/register">Register</Link>
+                                <Link exact='true' to="/register">Register</Link>
                             </li>
                         </>
                     ) : (<>

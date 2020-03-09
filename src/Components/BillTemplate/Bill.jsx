@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 //css
 import '../../styles/BillStyle/bill.css';
 import '../../styles/otherStyles/loader.css';
-//
-//firebase
-import firebase from 'firebase';
 //
 //react-redux
 import { connect } from 'react-redux';
@@ -32,8 +29,12 @@ import {
     Route
 } from 'react-router-dom'
 //
-//
+// action creator
 import { getUserBillValue } from '../../store/actions/index';
+//
+
+// bill amount html block
+import BillAmount from './BillAmount';
 //
 const mapStateToProps = (state) => {
     console.log(state)
@@ -91,20 +92,10 @@ const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
         getCurrencies();
     }, [bool]);
 
-
-    // TODO: Добавить pop-up после обновления
     return (
         <>
             <div className="wrapper">
-                {console.log(currencies)}
-                <div className='available-bill'>
-                    <div className="card">
-                        <div className="card-content">
-                            <span className="card-title white-text">Счет</span>
-                            <h5 className="tooltipped" data-position='bottom' data-tooltip='Это ваш текущий счет'>{user_bill} грн</h5>
-                        </div>
-                    </div>
-                </div>
+                <BillAmount user_bill={user_bill} />
                 <div className='current-currency-price'>
                     <div className="card">
                         <div className="card-content">
@@ -128,7 +119,8 @@ const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
             </div>
             <Switch>
                 <Route>
-                    {!user ? <Redirect to='/login'></Redirect> : null}
+                    {/*TODO: Заменить user на булевое знач*/}
+                    {!bool ? <Redirect to='/login'></Redirect> : null}
                 </Route>
             </Switch>
         </>

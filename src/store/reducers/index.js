@@ -6,7 +6,6 @@ const rootReducer = combineReducers({
     signInReducer,
     currUserReducer,
     userBillValueReducer
-
 });
 
 export default rootReducer;

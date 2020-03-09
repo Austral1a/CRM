@@ -16,6 +16,10 @@ import toastAnimation from '../../css-materialize animations/toast';
 import RefreshCurrency from './RefreshCurrencyBtn';
 //
 
+// correct way to'toFixed'
+import toFixed from '../../filters/numberFilter';
+//
+
 const mapStateToProps = (state) => {
     return {
         user_uid: state.currUserReducer.userUid,
@@ -47,12 +51,14 @@ const ConnectedBill = ({ user_uid, bool }) => {
         if (bool) {
             getBill();
         }
-        getCurrencies();
+        //getCurrencies();
     }, [bool]);
+
 
     // TODO: Добавить pop-up после обновления
     return (
         <div className="wrapper">
+            {}
             <div className='available-bill'>
                 <div className="card">
                     <div className="card-content">
@@ -72,7 +78,7 @@ const ConnectedBill = ({ user_uid, bool }) => {
                                     return (
                                         <tr key={currency}>
                                             <td key={currencies[currency]}>{currency}</td>
-                                            <td key={Math.random()}>{(bill / (currencies['UAH'] / currencies[currency]))} <small>{currency}</small></td>
+                                            <td key={Math.random()}>{toFixed(bill / (currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
                                         </tr>
                                     )
                                 }) : null}

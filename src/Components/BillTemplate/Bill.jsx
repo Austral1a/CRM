@@ -37,7 +37,6 @@ import { getUserBillValue } from '../../store/actions/index';
 import BillAmount from './BillAmount';
 //
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         user: state.currUserReducer.user,
         user_uid: state.currUserReducer.userUid,

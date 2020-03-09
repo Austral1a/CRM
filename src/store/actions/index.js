@@ -1,9 +1,10 @@
 import {
     SIGNIN_ERROR,
     SIGNIN_SUCCESS,
-    SIGNIN_START,
     CURRENT_USER_NOT_ANONYMOUS,
-    CURRENT_USER_ANONYMOUS
+    CURRENT_USER_ANONYMOUS,
+    GET_BILL_SUCCESS,
+    GET_BILL_ERROR
 } from './constants/action-types';
 import firebase from 'firebase';
 import auth from 'firebase/auth';
@@ -57,4 +58,28 @@ export const currentUserNotAnonymous = (user) => ({
 export const currentUserIsAnonymous = (user) => ({
     type: CURRENT_USER_ANONYMOUS,
     user,
+});
+
+
+// action creator for getting bill value from firebase db
+export const getUserBillValue = (user_uid) => {
+    return (dispatch) => {
+        try {
+            firebase.database().ref(`users/${user_uid}/info/bill`).on('value', (snapshot) => {
+                let bill = (snapshot.val() || 0)
+                dispatch(getUserBillSuccess(bill));
+            })
+        } catch {
+            dispatch(getUserBillError('Невозможно получить счет'))
+        }
+    }
+}
+
+export const getUserBillSuccess = (value) => ({
+    type: GET_BILL_SUCCESS,
+    user_bill: value,
+});
+export const getUserBillError = (error) => ({
+    type: GET_BILL_ERROR,
+    error
 });

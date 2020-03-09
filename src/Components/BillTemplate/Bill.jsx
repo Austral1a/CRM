@@ -33,6 +33,9 @@ import {
     Route
 } from 'react-router-dom'
 //
+//  pre loader
+import PreLoader from '../app/MainPreLoader';
+//
 const mapStateToProps = (state) => {
     return {
         user: state.currUserReducer.user,
@@ -58,15 +61,16 @@ const ConnectedBill = ({ user_uid, bool, user }) => {
     //
     const getCurrencies = async () => {
         try {
+            setLoading(true);
             const res = await fetch(`http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
             const data = await res.json();
             setCurrencies(data.rates);
-            currencies ? setLoading(true) : setLoading(false);
-            loading ? setToastText('Обновление произошло') : setToastText('');
-            toastAnimation(toastText);
+            !loading ? setToastText('Обновление произошло') : setToastText('');
+            toastAnimation(String(toastText));
+            setLoading(false);
         } catch {
             setToastText('Что-то пошло не так');
-            toastAnimation(toastText);
+            toastAnimation(String(toastText));
             setLoading(false);
         }
     }
@@ -98,8 +102,8 @@ const ConnectedBill = ({ user_uid, bool, user }) => {
                         <div className="card-content">
                             <span className="card-title white-text">Цены на валюту</span>
                             <RefreshCurrency onClick={getCurrencies} />
-                            <table className="currencies-list">
-                                {!loading ? <tbody>
+                            {!loading ? <table className="currencies-list">
+                                <tbody>
                                     {currencies ? Object.keys(currencies).map((currency) => {
                                         return (
                                             <tr key={currency}>
@@ -107,9 +111,9 @@ const ConnectedBill = ({ user_uid, bool, user }) => {
                                                 <td key={Math.random()}>{toFixed(bill / (currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
                                             </tr>
                                         )
-                                    }) : <p>Загрузка...</p>}
-                                </tbody> : <div className='loader'></div>}
-                            </table>
+                                    }) : <tr><td>Загрузка...</td></tr>}
+                                </tbody>
+                            </table> : <div className='loader'></div>}
                         </div>
                     </div>
                 </div>

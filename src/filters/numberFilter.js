@@ -5,7 +5,7 @@ const toFixed = (x, fraction) => {
         // else - vice-versa
     } else {
         x = String(x.toFixed(fraction))
-        return Number(x.replace(/0+/, ''))
+        return Number(x.replace(/^.0+$/, ''))
     }
 }
 export default toFixed;

@@ -7,6 +7,8 @@ import {
     GET_BILL_ERROR,
     UPDATE_DB_SUCCESS,
     UPDATE_DB_ERROR,
+    GET_CATEGORIES_SUCCESS,
+    GET_CATEGORIES_ERROR,
 } from './constants/action-types';
 import firebase from 'firebase';
 import auth from 'firebase/auth';
@@ -103,4 +105,26 @@ export const updateDbSuccess = () => ({
 });
 export const updateDbError = () => ({
     type: UPDATE_DB_ERROR,
+});
+
+// action craetor for getting data from categories
+export const getCategories = (user_uid) => {
+    return (dispatch) => {
+        try {
+            firebase.database().ref(`users/${user_uid}/categories`).on('value', (snapshot) => {
+                let categoriesData = (snapshot.val() || {});
+                dispatch(getCategoriesSuccess(categoriesData));
+            });
+        } catch {
+            dispatch(getCategoriesError());
+        }
+    };
+};
+
+export const getCategoriesSuccess = (categories) => ({
+    type: GET_CATEGORIES_SUCCESS,
+    categories
+});
+export const getCategoriesError = () => ({
+    type: GET_CATEGORIES_ERROR,
 });

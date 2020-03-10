@@ -2,9 +2,28 @@ import React, { useEffect } from 'react';
 // css
 import '../../styles/categoryTemplate/category.css';
 //
-
+// redux stuff
+import { connect } from 'react-redux';
+//
+// action for updating db
+import { updateDb } from '../../store/actions/index';
+//
+// action for getting categories data
+import { getCategories } from '../../store/actions/index';
+//
+// select animation and animation delete when unmounted will ocurs
 import { selectAnimation, selectAnimationDestroy } from '../../css-materialize animations/select';
-const Category = () => {
+//
+const mapDispatchToProps = (dispatch) => ({
+    updateDb: (updateOptions) => {
+        dispatch(updateDb(updateOptions))
+    },
+    getCategories: (user_uid) => {
+        dispatch(getCategories(user_uid))
+    }
+});
+
+const ConnectedCategory = () => {
 
     useEffect(() => {
         selectAnimation()
@@ -53,7 +72,12 @@ const Category = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
+const Category = connect(
+    null,
+    mapDispatchToProps
+)(ConnectedCategory);
 
 export default Category;

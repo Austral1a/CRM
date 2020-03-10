@@ -1,0 +1,41 @@
+.wrapper-category {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-left: 1.6rem;
+}
+
+.wrapper-category > .card {
+  width: 50vw;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.wrapper-category .category-create {
+  background-color: #AFAFFF !important;
+}
+
+.wrapper-category .category-create input {
+  border-bottom-color: #fff !important;
+}
+
+.wrapper-category .category-create label {
+  color: #fff;
+}
+
+.wrapper-category .category-change {
+  background-color: #FFBC3E !important;
+}
+
+.wrapper-category .category-change input {
+  border-bottom-color: #fff !important;
+}
+
+.wrapper-category .category-change label {
+  color: #fff;
+}
+/*# sourceMappingURL=category.css.map */

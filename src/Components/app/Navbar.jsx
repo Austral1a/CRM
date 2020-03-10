@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { currentSignedInUser } from '../../store/actions/index';
 import dateFilter from '../../filters/dateFilter';
 import '../../styles/navbarStyle/navbar.css'
+import '../../styles/otherStyles/loader.css'
 
 const mapStateToProps = (state) => {
     return {
@@ -23,6 +24,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         currUser: () => dispatch(currentSignedInUser())
+
     }
 };
 
@@ -33,20 +35,24 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
     });
 
     useLayoutEffect(() => {
-        setInterval(() => {
+        let interval = setInterval(() => {
             setCurrDateTime(dateFilter(new Date()));
         }, 1000)
+
+        return () => {
+            clearInterval(interval)
+        }
     })
     return (
         <nav className="nav-extend teal">
-            <div className="nav-content">
+            {bool ? <div className="nav-content">
                 <ul>
                     <li className="left">
                         <a href='#'
                             data-target="slide-out"
                             className="sidenav-trigger show-on-large"><i className="material-icons">menu</i></a>
                     </li>
-                    <Profiler id='current-date' callback={(id,
+                    <Profiler id='current-date' onRender={(id,
                         phase,
                         actualDuration,
                         baseDuration,
@@ -86,7 +92,7 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                         <li className='right '>{user.email}</li>
                     </>)}
                 </ul>
-            </div>
+            </div> : <div className='loader' />}
         </nav>
     )
 };

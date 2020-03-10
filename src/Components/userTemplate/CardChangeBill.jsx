@@ -1,51 +1,63 @@
 import React, { useState, useEffect } from 'react';
-
+//firebase 
 import firebase from 'firebase';
-
+//
+// react redux stuf
 import { connect } from 'react-redux';
+//
+// for toast anim
+import toastAnimation from '../../css-materialize animations/toast';
+//
 
+// update db
+import { updateDb } from '../../store/actions/index';
+//
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
     user_bill: state.userBillValueReducer.user_bill
 });
 
+const mapDispatchToProps = (dispatch) => ({
+    updateDb: (updateOptions) => {
+        dispatch((updateDb(updateOptions)));
+    }
+});
+//TODO: Убрать errorDb state.
 const ConnectedCard = (props) => {
-    const [checkbox, setCheckbox] = useState(false);
+    const [checkbox, setCheckbox] = useState(true);
     const [newBill, setNewBill] = useState(0);
+    const [errorDb, setErrorDb] = useState('');
 
     const handleChangeCheckbox = (e) => {
         setCheckbox(e.target.checked);
-    }
+    };
     const handleChangeInput = (e) => {
         setNewBill(e.target.value);
-    }
+    };
 
     const changeBill = async () => {
         // if need new bill
-        const postBillNew = {
-            bill: Number(newBill),
-        }
+        const postBillNew = Number(newBill)
         const updatesBillNew = {};
-        updatesBillNew['users/' + props.user_uid + '/info/'] = postBillNew;
+        updatesBillNew['users/' + props.user_uid + '/info/bill'] = postBillNew;
         ////
         // if need to add money into exist bill
-        const postBillAdd = {
-            bill: Number(newBill) + Number(props.user_bill),
-        };
+        const postBillAdd = Number(newBill) + Number(props.user_bill);
         const updatesBillAdd = {};
-        updatesBillAdd['users/' + props.user_uid + '/info/'] = postBillAdd;
+        updatesBillAdd['users/' + props.user_uid + '/info/bill'] = postBillAdd;
         ////
         try {
-            checkbox ? await firebase.database().ref().update(updatesBillAdd)
-                : await firebase.database().ref().update(updatesBillNew);
+            checkbox ? await props.updateDb(updatesBillAdd)
+                : await props.updateDb(updatesBillNew);
+            toastAnimation('Обновление произошло');
         } catch {
-            console.log('error')
-        }
-    }
+            setErrorDb('Что-то пошло не так.')
+            toastAnimation('Что-то пошло не так');
+        };
+    };
 
     return (
         <div className='card custom-card'>
-            {console.log(props.user_uid)}
             <div className="card-content custom-card-content">
                 <span className='card-title white-text'>Изменить счет ({props.user_bill} грн)</span>
                 <div className="switch">
@@ -68,14 +80,16 @@ const ConnectedCard = (props) => {
                 />
                 <label htmlFor="change-bill"></label>
                 <button
-                    className='waves-effect waves-light btm-small'
+                    className='waves-effect waves-light btn btm-small'
                     onClick={changeBill}
                 >Обновить счет</button>
+                {errorDb ? <p>{errorDb}</p> : null}
             </div>
         </div>
     );
 };
 const Card = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ConnectedCard);
 export default Card;

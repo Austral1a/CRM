@@ -56,30 +56,15 @@ const mapDispatchToProps = (dispatch) => {
 const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
 
     const [currencies, setCurrencies] = useState('');
-    const [toastText, setToastText] = useState('');
-    const [loading, setLoading] = useState(false);
 
-    // getting current bill amount, from db
-    /* const getBill = () => {
-        return firebase.database().ref(`users/${user_uid}/info/bill`).on('value', (snapshot) => {
-            let bill = (snapshot.val()) || 0;
-            setBill(bill);
-        })
-    }; */
-    //
     const getCurrencies = async () => {
         try {
-            setLoading(true);
             const res = await fetch(`http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
             const data = await res.json();
             setCurrencies(data.rates);
-            !loading ? setToastText('Обновление произошло') : setToastText('');
-            toastAnimation(String(toastText));
-            setLoading(false);
+            toastAnimation('Обновление произошло');
         } catch {
-            setToastText('Что-то пошло не так');
-            toastAnimation(String(toastText));
-            setLoading(false);
+            toastAnimation('Что-то пошло не так');
         }
     }
 
@@ -100,7 +85,7 @@ const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
                         <div className="card-content">
                             <span className="card-title white-text">Цены на валюту</span>
                             <RefreshCurrency onClick={getCurrencies} />
-                            {!loading ? <table className="currencies-list">
+                            {bool ? <table className="currencies-list">
                                 <tbody>
                                     {currencies ? Object.keys(currencies).map((currency) => {
                                         return (
@@ -109,7 +94,7 @@ const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
                                                 <td key={Math.random()}>{toFixed(user_bill / (currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
                                             </tr>
                                         )
-                                    }) : <tr><td>Загрузка...</td></tr>}
+                                    }) : <div className='loader'></div>}
                                 </tbody>
                             </table> : <div className='loader'></div>}
                         </div>
@@ -119,7 +104,7 @@ const ConnectedBill = ({ user_uid, bool, user, user_bill, getBill }) => {
             <Switch>
                 <Route>
                     {/*TODO: Заменить user на булевое знач*/}
-                    {!bool ? <Redirect to='/login'></Redirect> : null}
+                    {/*!bool ? <Redirect from='/login' to='/bill' ></Redirect> : null*/}
                 </Route>
             </Switch>
         </>

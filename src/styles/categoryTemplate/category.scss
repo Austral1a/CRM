@@ -1,0 +1,42 @@
+$category-main-back-color: #AFAFFF !important;
+$category-secondary-color: #FFBC3E !important;
+@mixin input($prop, $val) {
+    #{$prop}: $val; 
+}
+@mixin label($prop, $val) {
+    #{$prop}: $val;
+}
+@mixin category-back-color($prop, $val) {
+    #{$prop}: $val;
+}
+
+.wrapper-category {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1.6rem;
+
+    & > .card {
+        width: 50vw;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .category-create {
+        @include category-back-color(background-color, $category-main-back-color);
+        input {
+            @include input(border-bottom-color, #fff !important);
+        }
+        label {
+            @include label(color, #fff)
+        }
+    }
+    .category-change {
+        @include category-back-color(background-color, $category-secondary-color);
+        input {
+            @include input(border-bottom-color, #fff !important)
+        }
+        label {
+            @include label(color, #fff);
+        }
+    }
+}

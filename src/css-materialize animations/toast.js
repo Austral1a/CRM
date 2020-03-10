@@ -1,6 +1,6 @@
 import M from "materialize-css/dist/js/materialize.min.js";
-const toastAnimation = async (text) => {
-    if (text == false) {
+const toastAnimation = (text) => {
+    if (text === false) {
         return null;
     } else {
         M.toast(({ html: text }))

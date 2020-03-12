@@ -21,13 +21,7 @@ import RefreshCurrency from './RefreshCurrencyBtn';
 // correct way to'toFixed' number
 import toFixed from '../../filters/numberFilter';
 //
-
-// router stuff
-import {
-    Switch,
-    Route
-} from 'react-router-dom'
-//
+import PropTypes from 'prop-types';
 // action creator
 import { getUserBillValue } from '../../store/actions/index';
 import { fetchFixer } from '../../store/actions/index';
@@ -45,8 +39,8 @@ const mapStateToProps = (state) => {
         currencies: state.fetchToFixerApiReducer.currencies,
         isFetchFixerSuccess: state.fetchToFixerApiReducer.isSuccess,
         fetchFixerError: state.fetchToFixerApiReducer.error,
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -112,12 +106,21 @@ const ConnectedBill = ({
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 const Bill = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedBill);
+
+ConnectedBill.propTypes = {
+    user_uid: PropTypes.string.isRequired,
+    bool: PropTypes.bool.isRequired,
+    user_bill: PropTypes.number.isRequired,
+    currencies: PropTypes.object.isRequired,
+    isFetchFixerSuccess: PropTypes.bool.isRequired,
+    fetchFixerError: PropTypes.string.isRequired,
+};
 
 export default Bill;

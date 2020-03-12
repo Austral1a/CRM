@@ -12,13 +12,16 @@ import { updateDb } from '../../../store/actions/index';
 // action for handling changes in input
 import { updateExistsCategoryLimit } from '../../../store/actions/index';
 //
+import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { toastAnimation, toastAnimationDestroy } from '../../../css-materialize animations/toast';
+import { getUserBillValue } from '../../../store/actions/index';
 const mapStateToProps = (state) => ({
     categories: state.getCategoriesReducer.categories,
     user_uid: state.currUserReducer.userUid,
     changeLimitExistCateg: state.updateLimitCategReducer.changeLimit,
     checkbox: state.setCategCheckboxReducer.isChecked,
+    user_bill: state.userBillValueReducer.user_bill,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -28,8 +31,20 @@ const mapDispatchToProps = (dispatch) => ({
     changeExistsCategLimit: (v) => {
         dispatch(updateExistsCategoryLimit(v));
     },
+    getBill: (user_uid) => {
+        dispatch(getUserBillValue(user_uid));
+    },
 });
-const ConnectedCategorySelect = ({ checkbox, user_uid, categories, changeLimitExistCateg, changeExistsCategLimit, updateDbFromSelect }) => {
+const ConnectedCategorySelect = ({
+    checkbox,
+    user_uid,
+    categories,
+    changeLimitExistCateg,
+    changeExistsCategLimit,
+    updateDbFromSelect,
+    getBill,
+    user_bill
+}) => {
 
     const [selectCategKey, setSelectCategKey] = useState();
     const [selectCategName, setSelectCategName] = useState();
@@ -68,32 +83,51 @@ const ConnectedCategorySelect = ({ checkbox, user_uid, categories, changeLimitEx
                 return null;
             })
         }, [categories, selectCategName]);
-
     const UpdateDbChangeCategory =
         () => {
+            let currCategoryLimit;
+            firebase.database().ref(`users/${user_uid}/categories/${selectCategKey}/limit`).on('value', (snapshot) => {
+                currCategoryLimit = (snapshot.val());
+            });
 
             let updateCategoriesNew = +changeLimitExistCateg;
             let updateCategoriesAdd = +selectCategLimit + +changeLimitExistCateg;
-
             let updatesNewCateg = {};
             let updatesChangeCateg = {};
             updatesNewCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesNew;
             updatesChangeCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesAdd;
-            try {
-                checkbox ?
-                    updateDbFromSelect(updatesChangeCateg)
-                    : updateDbFromSelect(updatesNewCateg);
-                toastAnimation('Категория была успешно обновлена');
-            } catch {
-                toastAnimation('Что-то пошло не так');
-            }
-
+            // update bill if user changing current category, and it will add residue to current bill
+            let updatesUpdateLimit = {};
+            updatesUpdateLimit['users/' + user_uid + '/info/bill'] = (changeLimitExistCateg > currCategoryLimit) ?
+                (user_bill - Math.abs(currCategoryLimit - changeLimitExistCateg)) :
+                (user_bill + Math.abs(currCategoryLimit - changeLimitExistCateg));
+            if (checkbox) {
+                if ((changeLimitExistCateg + user_bill) > user_bill) {
+                    toastAnimation('Вы не можете столько добавить, так-как у вас не так столько денег на счету');
+                } else {
+                    try {
+                        updateDbFromSelect(updatesChangeCateg)
+                        toastAnimation('Категория была успешно обновлена');
+                    } catch {
+                        toastAnimation('Что-то пошло не так');
+                    };
+                };
+            } else {
+                if (changeLimitExistCateg > user_bill) {
+                    toastAnimation('Вы не можете установить такой лимит, так-как у вас не столько денег счету');
+                } else {
+                    updateDbFromSelect(updatesNewCateg);
+                    toastAnimation('Категория была успешно обновлена');
+                    updateDbFromSelect(updatesUpdateLimit)
+                };
+            };
         };
 
     useEffect(() => {
+        getBill(user_uid);
         memoHandleChangeSelectLimit();
         memoHandleCurrCategory();
-    }, [memoHandleChangeSelectLimit, memoHandleCurrCategory])
+    }, [memoHandleChangeSelectLimit, memoHandleCurrCategory, getBill, user_uid])
 
     useEffect(() => {
         return () => {

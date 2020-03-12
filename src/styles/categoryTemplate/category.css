@@ -27,6 +27,12 @@
   color: #fff;
 }
 
+.wrapper-category .category-create button {
+  width: 100%;
+  margin: 0 0 !important;
+  background-color: #FFBC3E !important;
+}
+
 .wrapper-category .category-change {
   background-color: #FFBC3E !important;
 }
@@ -37,5 +43,11 @@
 
 .wrapper-category .category-change label {
   color: #fff;
+}
+
+.wrapper-category .category-change button {
+  width: 100%;
+  margin: 0 0 !important;
+  background-color: #AFAFFF !important;
 }
 /*# sourceMappingURL=category.css.map */

@@ -1,18 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect, Profiler, useLayoutEffect } from 'react';
-import {
-    Link,
-    Switch,
-    Route,
-    Redirect
-} from "react-router-dom";
-import firebase from 'firebase';
-import auth from 'firebase/auth';
-import { connect } from 'react-redux';
-import { currentSignedInUser } from '../../store/actions/index';
-import dateFilter from '../../filters/dateFilter';
+// css
 import '../../styles/navbarStyle/navbar.css'
 import '../../styles/otherStyles/loader.css'
+//
+import PropTypes from 'prop-types';
+import {
+    Link,
+} from "react-router-dom";
+// firebase
+import firebase from 'firebase';
+//
+import { connect } from 'react-redux';
+// action creator for getting current signed user
+import { currentSignedInUser } from '../../store/actions/index';
+//
+import dateFilter from '../../filters/dateFilter';
 
 const mapStateToProps = (state) => {
     return {
@@ -24,7 +27,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         currUser: () => dispatch(currentSignedInUser())
-
     }
 };
 
@@ -42,7 +44,7 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
         return () => {
             clearInterval(interval)
         }
-    })
+    }, [])
     return (
         <nav className="nav-extend teal">
             {bool ? <div className="nav-content">
@@ -101,5 +103,11 @@ const Navbar = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedNavbar);
+
+ConnectedNavbar.propTypes = {
+    currUser: PropTypes.func.isRequired,
+    // user: PropTypes.object.isRequired, ????
+    bool: PropTypes.bool.isRequired,
+}
 
 export default Navbar;

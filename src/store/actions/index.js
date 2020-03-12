@@ -9,10 +9,13 @@ import {
     UPDATE_DB_ERROR,
     GET_CATEGORIES_SUCCESS,
     GET_CATEGORIES_ERROR,
+    SET_NEW_CATEGORY_NAME,
+    SET_NEW_CATAGORY_LIMIT,
+    CHANGE_EXISTS_CATEGORY_LIMIT,
+    CHANGE_EXISTS_CATEGORY_CHECKBOX_TRUE,
+    CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
 } from './constants/action-types';
 import firebase from 'firebase';
-import auth from 'firebase/auth';
-import database from 'firebase/database';
 // action creator as well, just with async doings, 
 //  that means action-creator returns a func rather than action
 export const signInUser = (email, password) => {
@@ -127,4 +130,28 @@ export const getCategoriesSuccess = (categories) => ({
 });
 export const getCategoriesError = () => ({
     type: GET_CATEGORIES_ERROR,
+});
+
+////////////////////
+// for category page
+export const setNewCategoryName = (name) => ({
+    type: SET_NEW_CATEGORY_NAME,
+    newName: name,
+});
+export const setNewCategoryLimit = (limit) => ({
+    type: SET_NEW_CATAGORY_LIMIT,
+    newLimit: limit,
+});
+export const updateExistsCategoryLimit = (limit) => ({
+    type: CHANGE_EXISTS_CATEGORY_LIMIT,
+    changeLimit: limit,
+});
+
+export const setCategoryCheckBoxTrue = (isChecked) => ({
+    type: CHANGE_EXISTS_CATEGORY_CHECKBOX_TRUE,
+    isChecked,
+});
+export const setCategoryCheckboxFalse = (isChecked) => ({
+    type: CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
+    isChecked,
 });

@@ -5,9 +5,7 @@ import App from './Components/App';
 import * as serviceWorker from './serviceWorker';
 import 'materialize-css/dist/js/materialize.min'
 import firebase from 'firebase/app';
-import 'firebase/auth'
 import { Provider } from 'react-redux';
-//import { createStore, applyMiddleware } from 'redux';
 import store from './store/index';
 
 
@@ -25,11 +23,6 @@ const firebaseConfig = {
 
 
 firebase.initializeApp(firebaseConfig);
-/* store.subscribe(() => console.log('ya juv ebaat'));
-store.dispatch(userIsAuth());
-store.dispatch(userNotAuth());
-console.log(store.getState()) */
-//const store = createStore(Navbar);
 
 ReactDOM.render(
     <Provider store={store}>

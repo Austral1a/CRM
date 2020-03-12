@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// select animation and animation delete when unmounted will ocurs
-//import { selectAnimation, selectAnimationDestroy } from '../../css-materialize animations/select';
 //
 // css
-import '../../styles/categoryTemplate/category.css';
+import '../../../styles/categoryTemplate/category.css';
 //
 // redux stuff
 import { connect } from 'react-redux';
 //
 // action for updating db
-import { updateDb } from '../../store/actions/index';
+import { updateDb } from '../../../store/actions/index';
 //
 // action for handling changes in input
-import { updateExistsCategoryLimit } from '../../store/actions/index';
+import { updateExistsCategoryLimit } from '../../../store/actions/index';
 //
 import PropTypes from 'prop-types';
+import { toastAnimation, toastAnimationDestroy } from '../../../css-materialize animations/toast';
 const mapStateToProps = (state) => ({
     categories: state.getCategoriesReducer.categories,
     user_uid: state.currUserReducer.userUid,
@@ -84,8 +83,9 @@ const ConnectedCategorySelect = ({ checkbox, user_uid, categories, changeLimitEx
                 checkbox ?
                     updateDbFromSelect(updatesChangeCateg)
                     : updateDbFromSelect(updatesNewCateg);
+                toastAnimation('Категория была успешно обновлена');
             } catch {
-                return null;
+                toastAnimation('Что-то пошло не так');
             }
 
         };
@@ -94,6 +94,12 @@ const ConnectedCategorySelect = ({ checkbox, user_uid, categories, changeLimitEx
         memoHandleChangeSelectLimit();
         memoHandleCurrCategory();
     }, [memoHandleChangeSelectLimit, memoHandleCurrCategory])
+
+    useEffect(() => {
+        return () => {
+            toastAnimationDestroy();
+        }
+    }, [])
     return (
         // temporary measure (select tag appearance)
         <>

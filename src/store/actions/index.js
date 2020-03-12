@@ -14,6 +14,8 @@ import {
     CHANGE_EXISTS_CATEGORY_LIMIT,
     CHANGE_EXISTS_CATEGORY_CHECKBOX_TRUE,
     CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
+    GET_CURRENCIES_SUCCESS,
+    GET_CURRENCIES_ERROR
 } from './constants/action-types';
 import firebase from 'firebase';
 // action creator as well, just with async doings, 
@@ -154,4 +156,29 @@ export const setCategoryCheckBoxTrue = (isChecked) => ({
 export const setCategoryCheckboxFalse = (isChecked) => ({
     type: CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
     isChecked,
+});
+
+///////////////////
+//  fetch to fixer api
+
+export const fetchFixer = () => {
+    return async (dispatch) => {
+        try {
+            const res = await fetch(`http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
+            const data = await res.json();
+            dispatch(fetchFixerSuccess(data.rates));
+        } catch {
+            dispatch(fetchFixerError('Невозможно получить данные'));
+        };
+    };
+};
+
+
+export const fetchFixerSuccess = (currencies) => ({
+    type: GET_CURRENCIES_SUCCESS,
+    currencies,
+});
+export const fetchFixerError = (error) => ({
+    type: GET_CURRENCIES_ERROR,
+    error,
 });

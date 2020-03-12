@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-//firebase 
-import firebase from 'firebase';
-//
 // react redux stuf
 import { connect } from 'react-redux';
 //
 // for toast anim
-import toastAnimation from '../../css-materialize animations/toast';
+import { toastAnimation, toastAnimationDestroy } from '../../css-materialize animations/toast';
 //
 
 // update db
@@ -26,7 +23,6 @@ const mapDispatchToProps = (dispatch) => ({
 const ConnectedCard = (props) => {
     const [checkbox, setCheckbox] = useState(true);
     const [newBill, setNewBill] = useState(0);
-    const [errorDb, setErrorDb] = useState('');
 
     const handleChangeCheckbox = (e) => {
         setCheckbox(e.target.checked);
@@ -36,7 +32,7 @@ const ConnectedCard = (props) => {
     };
 
     const changeBill = async () => {
-        // if need new bill
+        // if need a new bill
         const postBillNew = Number(newBill)
         const updatesBillNew = {};
         updatesBillNew['users/' + props.user_uid + '/info/bill'] = postBillNew;
@@ -49,12 +45,17 @@ const ConnectedCard = (props) => {
         try {
             checkbox ? await props.updateDb(updatesBillAdd)
                 : await props.updateDb(updatesBillNew);
-            toastAnimation('Обновление произошло');
+            toastAnimation('Счет успешно обновлен');
         } catch {
-            setErrorDb('Что-то пошло не так.')
             toastAnimation('Что-то пошло не так');
         };
     };
+
+    useEffect(() => {
+        return () => {
+            toastAnimationDestroy();
+        };
+    }, []);
 
     return (
         <div className='card custom-card'>
@@ -83,7 +84,6 @@ const ConnectedCard = (props) => {
                     className='waves-effect waves-light btn btm-small'
                     onClick={changeBill}
                 >Обновить счет</button>
-                {errorDb ? <p>{errorDb}</p> : null}
             </div>
         </div>
     );

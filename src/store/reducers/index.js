@@ -4,6 +4,9 @@ import currUserReducer from './currentUserReducer';
 import userBillValueReducer from './currentUserBillValueReducer';
 import updateDbReducer from './updateDbReducer';
 import getCategoriesReducer from './getCategoriesReducer';
+//
+import fetchToFixerApiReducer from './fetch/fetchToFixerApiReducer';
+//
 import {
     newNameCategoryReducer,
     newLimitCategoryReducer,
@@ -20,6 +23,7 @@ const rootReducer = combineReducers({
     newLimitCategoryReducer,
     updateLimitCategReducer,
     setCategCheckboxReducer,
+    fetchToFixerApiReducer
 });
 
 export default rootReducer;

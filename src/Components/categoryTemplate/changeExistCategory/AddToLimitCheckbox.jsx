@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {
     setCategoryCheckBoxTrue,
     setCategoryCheckboxFalse,
-} from '../../store/actions/index';
+} from '../../../store/actions/index';
 
 const mapStateToProps = (state) => ({
     checkbox: state.setCategCheckboxReducer.isChecked,

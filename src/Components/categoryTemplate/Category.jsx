@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 // css
 import '../../styles/categoryTemplate/category.css';
 import '../../styles/otherStyles/loader.css';
@@ -12,13 +12,12 @@ import { updateDb } from '../../store/actions/index';
 // action for getting categories data
 import { getCategories } from '../../store/actions/index';
 //
-import { updateExistsCategoryLimit } from '../../store/actions/index';
 // checkbox which is asking, add to limit or replace old value?
-import AddToLimitCheckbox from './AddToLimitCheckbox';
+import AddToLimitCheckbox from './changeExistCategory/AddToLimitCheckbox';
 //
 
 //
-import CategorySelect from './Select';
+import CategorySelect from './changeExistCategory/Select';
 //
 
 //
@@ -31,6 +30,10 @@ import AddToCategoryInput from './AddNewCategory/CategoryInputLimit';
 
 //
 import firebase from 'firebase';
+//
+
+//animation for toast 
+import { toastAnimation, toastAnimationDestroy } from '../../css-materialize animations/toast';
 //
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
@@ -51,12 +54,9 @@ const mapDispatchToProps = (dispatch) => ({
     getCategories: (user_uid) => {
         dispatch(getCategories(user_uid))
     },
-    changeExistsCategLimit: (v) => {
-        dispatch(updateExistsCategoryLimit(v));
-    },
+
 });
 const ConnectedCategory = ({
-    changeLimitExistCateg,
     user_uid,
     getCategories,
     updateDb,
@@ -64,11 +64,6 @@ const ConnectedCategory = ({
     newName,
     newLimit }) => {
     //TODO: Сделать валидацию полей
-    //TODO: state для селектора
-
-    useEffect(() => {
-        getCategories(user_uid);
-    }, [getCategories, user_uid])
 
     const updateDbAddNewCategory = () => {
         let postCategories = {
@@ -79,8 +74,21 @@ const ConnectedCategory = ({
         let updates = {};
         let postKey = firebase.database().ref().child(`users${user_uid}`).push().key;
         updates['users/' + user_uid + '/categories/' + postKey] = postCategories;
-        updateDb(updates);
-    }
+        try {
+            updateDb(updates);
+            toastAnimation('Новая категория была успешно добавлена');
+        } catch {
+            toastAnimation('Что-то пошло не так');
+        }
+    };
+    useEffect(() => {
+
+        getCategories(user_uid);
+        return () => {
+            toastAnimationDestroy();
+        }
+    }, [getCategories, user_uid])
+
 
 
 

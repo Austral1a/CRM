@@ -46,10 +46,9 @@ const ConnectedCategorySelect = ({
     user_bill
 }) => {
 
-    const [selectCategKey, setSelectCategKey] = useState();
-    const [selectCategName, setSelectCategName] = useState();
-    const [selectCategLimit, setSelectLimit] = useState();
-    //const [selectRef, setSelectRef] = useState(React.createRef());
+    const [selectCategKey, setSelectCategKey] = useState('');
+    const [selectCategName, setSelectCategName] = useState('');
+    const [selectCategLimit, setSelectLimit] = useState(0);
     const handleChangeSelectName = (e) => {
         setSelectCategName(e.target.value);
     };
@@ -85,40 +84,43 @@ const ConnectedCategorySelect = ({
         }, [categories, selectCategName]);
     const UpdateDbChangeCategory =
         () => {
-            let currCategoryLimit;
-            firebase.database().ref(`users/${user_uid}/categories/${selectCategKey}/limit`).on('value', (snapshot) => {
-                currCategoryLimit = (snapshot.val());
-            });
-
             let updateCategoriesNew = +changeLimitExistCateg;
-            let updateCategoriesAdd = +selectCategLimit + +changeLimitExistCateg;
+            let updateCategoriesAdd = selectCategLimit + +changeLimitExistCateg;
             let updatesNewCateg = {};
             let updatesChangeCateg = {};
             updatesNewCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesNew;
             updatesChangeCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesAdd;
             // update bill if user changing current category, and it will add residue to current bill
-            let updatesUpdateLimit = {};
-            updatesUpdateLimit['users/' + user_uid + '/info/bill'] = (changeLimitExistCateg > currCategoryLimit) ?
-                (user_bill - Math.abs(currCategoryLimit - changeLimitExistCateg)) :
-                (user_bill + Math.abs(currCategoryLimit - changeLimitExistCateg));
+            let updatesUpdateLimitChange = {}; // true checkbox
+            updatesUpdateLimitChange['users/' + user_uid + '/info/bill'] = user_bill - +changeLimitExistCateg;
+            let updatesUpdateLimitNew = {}; // false checkbbox
+            updatesUpdateLimitNew['users/' + user_uid + '/info/bill'] = (+changeLimitExistCateg > selectCategLimit) ?
+                (user_bill - Math.abs(selectCategLimit - +changeLimitExistCateg)) :
+                (user_bill + Math.abs(selectCategLimit - +changeLimitExistCateg));
+            //console.log((+changeLimitExistCateg + selectCategLimit) > user_bill, +changeLimitExistCateg, selectCategLimit, user_bill)
             if (checkbox) {
-                if ((changeLimitExistCateg + user_bill) > user_bill) {
+                if ((+changeLimitExistCateg + selectCategLimit) > user_bill) {
                     toastAnimation('Вы не можете столько добавить, так-как у вас не так столько денег на счету');
                 } else {
                     try {
-                        updateDbFromSelect(updatesChangeCateg)
+                        updateDbFromSelect(updatesChangeCateg);
                         toastAnimation('Категория была успешно обновлена');
+                        updateDbFromSelect(updatesUpdateLimitChange);
                     } catch {
                         toastAnimation('Что-то пошло не так');
                     };
                 };
             } else {
-                if (changeLimitExistCateg > user_bill) {
+                if (+changeLimitExistCateg > user_bill) {
                     toastAnimation('Вы не можете установить такой лимит, так-как у вас не столько денег счету');
                 } else {
-                    updateDbFromSelect(updatesNewCateg);
-                    toastAnimation('Категория была успешно обновлена');
-                    updateDbFromSelect(updatesUpdateLimit)
+                    try {
+                        updateDbFromSelect(updatesNewCateg);
+                        toastAnimation('Категория была успешно обновлена');
+                        updateDbFromSelect(updatesUpdateLimitNew);
+                    } catch {
+                        toastAnimation('Что-то пошло не так');
+                    };
                 };
             };
         };

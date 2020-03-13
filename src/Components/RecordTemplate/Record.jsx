@@ -68,9 +68,16 @@ const ConnectedRecord = ({
         };
         let postKey = firebase.database().ref().child(selectCategKey).push().key;
         let updates = {};
+        let updatesRecordAmout = {};
         try {
             updates['users/' + user_uid + '/categories/' + selectCategKey + '/records/' + postKey] = checkboxIncome ? postDataIncome : postDataConsumption;
             updateDbWriteRecord(updates);
+
+            updatesRecordAmout['users/' + user_uid + '/categories/' + selectCategKey + '/total'] = checkboxIncome ?
+                (categories[selectCategKey].total ? categories[selectCategKey].total + +amount : categories[selectCategKey].limit + +amount)
+                :
+                (categories[selectCategKey].total ? categories[selectCategKey].total - +amount : categories[selectCategKey].limit - +amount);
+            updateDbWriteRecord(updatesRecordAmout);
             toastAnimation('Запись была успешно добавлена');
         } catch {
             toastAnimation('Что-то пошло не так');

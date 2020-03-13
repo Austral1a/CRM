@@ -1,6 +1,21 @@
 import M from "materialize-css/dist/js/materialize.min.js";
-const tooltipAnimation = () => {
-    var elems = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems);
+let instance;
+export const tooltipAnimation = (elem) => {
+    var instances = M.Tooltip.init(elem);
+    instance = M.Tooltip.getInstance(elem);
+};
+export const tooltipDestroy = () => {
+    instance.destroy();
 }
-export default tooltipAnimation;
+
+/* import M from "materialize-css/dist/js/materialize.min.js";
+let instance;
+export const tooltipAnimation = (elem) => {
+    var instances = M.Tooltip.init(elem);
+    instance = M.Tooltip.getInstance(elem);
+    
+};
+export const tooltipDestroy = () => {
+    instance.destroy();
+}
+ */

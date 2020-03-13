@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 import User from '../userTemplate/User';
 import Category from '../categoryTemplate/Category';
+import Survey from '../SurveyTamplate/Survey';
 const Sidebar = () => {
     useEffect(() => {
         // for sidenav animnations and all that stuff
@@ -27,6 +28,7 @@ const Sidebar = () => {
                 <li><Link className='waves-effect waves-teal' to="/bill">Счет</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/category">Категории</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/records">Записи</Link></li>
+                <li><Link className='waves=effect waves-teal' to="/survey">Обзор</Link></li>
             </ul>
             <Switch>
                 <Route path="/you">
@@ -38,9 +40,11 @@ const Sidebar = () => {
                 <Route path="/category">
                     <Category />
                 </Route>
-
                 <Route path="/records">
                     <Record />
+                </Route>
+                <Route path="/survey">
+                    <Survey />
                 </Route>
             </Switch>
         </>

@@ -7,7 +7,7 @@ import '../../styles/otherStyles/loader.css';
 import { connect } from 'react-redux';
 //
 // tooltip animation
-import tooltipAnimation from '../../css-materialize animations/tooltip';
+import { tooltipAnimation, tooltipDestroy } from '../../css-materialize animations/tooltip';
 //
 
 // toast animation
@@ -65,7 +65,6 @@ const ConnectedBill = ({
 }) => {
 
     useEffect(() => {
-        tooltipAnimation();
         if (bool) {
             getBill(user_uid);
         };
@@ -73,11 +72,6 @@ const ConnectedBill = ({
         getCurrencies();
     }, [bool, getBill, user_uid, getCurrencies, isFetchFixerSuccess, fetchFixerError]);
 
-    useEffect(() => {
-        return () => {
-            toastAnimationDestroy();
-        };
-    }, []);
 
     return (
         <div className="wrapper">

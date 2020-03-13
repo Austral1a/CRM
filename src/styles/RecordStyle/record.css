@@ -7,6 +7,13 @@
   height: 100%;
 }
 
+.custom-card-record button {
+  background-color: #AFAFFF !important;
+  width: 100%;
+  margin-top: 1.5rem !important;
+  margin-left: 0 !important;
+}
+
 .custom-card-record {
   background-color: #FFBC3E !important;
 }

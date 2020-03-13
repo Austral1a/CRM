@@ -32,24 +32,12 @@ $category-secondary-color: #FFBC3E !important;
 
     .category-create {
         @include category-back-color(background-color, $category-main-back-color);
-        input {
-            @include input(border-bottom-color, #fff !important);
-        }
-        label {
-            @include label(color, #fff);
-        }
         button {
             @include button($main: false);
         }
     }
     .category-change {
         @include category-back-color(background-color, $category-secondary-color);
-        input {
-            @include input(border-bottom-color, #fff !important);
-        }
-        label {
-            @include label(color, #fff);
-        }
         button {
             @include button($main: true);
         }

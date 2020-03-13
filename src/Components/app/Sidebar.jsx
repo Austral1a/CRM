@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import M from "materialize-css/dist/js/materialize.min.js";
 import '../../styles/sidebarStyle/sidebar.css'
 
-import firebase from 'firebase/app';
 import 'firebase/auth'
 
 import Bill from '../BillTemplate/Bill';
-
+import Record from '../RecordTemplate/Record';
 import {
     Link,
     Route,
@@ -27,6 +26,7 @@ const Sidebar = () => {
                 <li><Link className='waves-effect waves-teal' to="/you">Ваш профиль</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/bill">Счет</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/category">Категории</Link></li>
+                <li><Link className='waves-effect waves-teal' to="/records">Записи</Link></li>
             </ul>
             <Switch>
                 <Route path="/you">
@@ -37,6 +37,10 @@ const Sidebar = () => {
                 </Route>
                 <Route path="/category">
                     <Category />
+                </Route>
+
+                <Route path="/records">
+                    <Record />
                 </Route>
             </Switch>
         </>

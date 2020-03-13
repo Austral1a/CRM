@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,eAAe,CAAC;EACZ,WAAW,EAAE,MAAM;CACtB;;AACD,AAAA,mBAAmB,CAAC;EAChB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;CACf;;AACD,AAAA,mBAAmB,CAAC;EAChB,gBAAgB,EATO,OAAO,CAAC,UAAU;CAU5C",
+    "sources": [
+        "record.scss"
+    ],
+    "names": [],
+    "file": "record.css"
+}

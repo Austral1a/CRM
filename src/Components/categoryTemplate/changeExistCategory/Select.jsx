@@ -92,12 +92,16 @@ const ConnectedCategorySelect = ({
             updatesChangeCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesAdd;
             // update bill if user changing current category, and it will add residue to current bill
             let updatesUpdateLimitChange = {}; // true checkbox
+            // we just subtract new limit from user bill because we just adding to an existing limit some value;  
             updatesUpdateLimitChange['users/' + user_uid + '/info/bill'] = user_bill - +changeLimitExistCateg;
             let updatesUpdateLimitNew = {}; // false checkbbox
+            // here a lil bit harder,
+            // 1) but we are comparing new limit to a limit which already exists, 
+            //  and if it's bigger (exist limit > new limit) then we subtract difference between new limit and an exist limit from user bill.
+            // 2) that expression equals to the first one, but we are adding to user bill rather than subtracting
             updatesUpdateLimitNew['users/' + user_uid + '/info/bill'] = (+changeLimitExistCateg > selectCategLimit) ?
                 (user_bill - Math.abs(selectCategLimit - +changeLimitExistCateg)) :
                 (user_bill + Math.abs(selectCategLimit - +changeLimitExistCateg));
-            //console.log((+changeLimitExistCateg + selectCategLimit) > user_bill, +changeLimitExistCateg, selectCategLimit, user_bill)
             if (checkbox) {
                 if ((+changeLimitExistCateg + selectCategLimit) > user_bill) {
                     toastAnimation('Вы не можете столько добавить, так-как у вас не так столько денег на счету');

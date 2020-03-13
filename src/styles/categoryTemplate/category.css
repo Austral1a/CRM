@@ -19,14 +19,6 @@
   background-color: #AFAFFF !important;
 }
 
-.wrapper-category .category-create input {
-  border-bottom-color: #fff !important;
-}
-
-.wrapper-category .category-create label {
-  color: #fff;
-}
-
 .wrapper-category .category-create button {
   width: 100%;
   margin: 0 0 !important;
@@ -35,14 +27,6 @@
 
 .wrapper-category .category-change {
   background-color: #FFBC3E !important;
-}
-
-.wrapper-category .category-change input {
-  border-bottom-color: #fff !important;
-}
-
-.wrapper-category .category-change label {
-  color: #fff;
 }
 
 .wrapper-category .category-change button {

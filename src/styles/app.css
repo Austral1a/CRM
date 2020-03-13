@@ -1,6 +1,16 @@
 @import "~materialize-css/dist/css/materialize.min.css";
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
+
+input {
+  border-bottom-color: #fff !important;
+}
+
+label {
+  color: #fff !important;
+}
+/*# sourceMappingURL=app.css.map */

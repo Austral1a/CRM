@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@mixin input($prop, $val) {
+    #{$prop}: $val;
+}
+@mixin label($prop, $val) {
+    #{$prop}: $val;
+}
+input {
+    @include input(border-bottom-color, #fff !important);
+}
+label {
+    @include label(color, #fff !important);
+}

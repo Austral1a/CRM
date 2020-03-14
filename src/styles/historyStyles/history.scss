@@ -1,0 +1,35 @@
+@mixin arrivingColorType($income) {
+    display: inline-block;
+    padding: 0 16px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    
+    @if $income {
+        background-color: #52BE68;
+    } @else {
+        background-color: #E43A37;
+    }
+}
+.wrapper-history {
+    margin: 0 0 0 2.5rem;
+}
+.history-description {
+    display: inline-block;
+    margin-bottom: 168px;
+}
+
+table {
+    width: 95% !important;
+    color: #fff;
+    font-size: 1.3rem;
+    tr {
+        border-color: #fff;
+    };
+};
+
+.income {
+    @include arrivingColorType($income: true);
+};
+.consumption {
+    @include arrivingColorType($income: false);
+};

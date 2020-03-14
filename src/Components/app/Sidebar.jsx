@@ -14,6 +14,7 @@ import {
 import User from '../userTemplate/User';
 import Category from '../categoryTemplate/Category';
 import Survey from '../SurveyTamplate/Survey';
+import History from '../HistoryTemplate/History';
 const Sidebar = () => {
     useEffect(() => {
         // for sidenav animnations and all that stuff
@@ -25,6 +26,7 @@ const Sidebar = () => {
         <>
             <ul id="slide-out" className="sidenav">
                 <li><Link className='waves-effect waves-teal' to="/you">Ваш профиль</Link></li>
+                <li><Link className='waves-effect waves-teal' to="/history">История</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/bill">Счет</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/category">Категории</Link></li>
                 <li><Link className='waves-effect waves-teal' to="/records">Записи</Link></li>
@@ -33,6 +35,9 @@ const Sidebar = () => {
             <Switch>
                 <Route path="/you">
                     <User user_email='email or username' />
+                </Route>
+                <Route path='/history'>
+                    <History />
                 </Route>
                 <Route path="/bill">
                     <Bill />

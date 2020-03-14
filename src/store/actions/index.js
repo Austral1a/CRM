@@ -15,7 +15,9 @@ import {
     CHANGE_EXISTS_CATEGORY_CHECKBOX_TRUE,
     CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
     GET_CURRENCIES_SUCCESS,
-    GET_CURRENCIES_ERROR
+    GET_CURRENCIES_ERROR,
+    GET_RECORDS_SUCCESS,
+    GET_RECORDS_ERROR,
 } from './constants/action-types';
 import firebase from 'firebase';
 // action creator as well, just with async doings, 
@@ -181,4 +183,30 @@ export const fetchFixerSuccess = (currencies) => ({
 export const fetchFixerError = (error) => ({
     type: GET_CURRENCIES_ERROR,
     error,
+});
+
+//////////
+////////////////////
+// get records
+
+export const getCategRecords = (user_uid) => {
+    return (dispatch)  => {
+        try { 
+            firebase.database().ref(`users/${user_uid}/categories/records`).on('value', (snapshot) => {
+                let recordsData = (snapshot.val() || {});
+                dispatch(getCategRecordsSuccess(recordsData));
+            });
+        } catch {
+            dispatch(getCategRecordsError());
+        };
+    };
+};
+
+export const getCategRecordsSuccess = (records) => ({
+    type: GET_RECORDS_SUCCESS,
+    records,
+});
+
+export const getCategRecordsError = () => ({
+    type: GET_RECORDS_ERROR
 });

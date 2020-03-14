@@ -1,0 +1,35 @@
+.wrapper-history {
+  margin: 0 0 0 2.5rem;
+}
+
+.history-description {
+  display: inline-block;
+  margin-bottom: 168px;
+}
+
+table {
+  width: 95% !important;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+table tr {
+  border-color: #fff;
+}
+
+.income {
+  display: inline-block;
+  padding: 0 16px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  background-color: #52BE68;
+}
+
+.consumption {
+  display: inline-block;
+  padding: 0 16px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  background-color: #E43A37;
+}
+/*# sourceMappingURL=history.css.map */

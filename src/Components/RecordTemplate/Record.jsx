@@ -61,12 +61,14 @@ const ConnectedRecord = ({
         let postDataIncome = {
             income: +amount,
             descrtiption: descript,
-            category: categories[selectCategKey].name
+            category: categories[selectCategKey].name,
+            time: new Date(),
         };
         let postDataConsumption = {
             consumption: +amount,
             descrtiption: descript,
-            category: categories[selectCategKey].name
+            category: categories[selectCategKey].name,
+            time: new Date(),
         };
         let postKey = firebase.database().ref().child(selectCategKey).push().key;
         let updates = {};

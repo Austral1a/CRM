@@ -61,16 +61,18 @@ const ConnectedRecord = ({
         let postDataIncome = {
             income: +amount,
             descrtiption: descript,
+            category: categories[selectCategKey].name
         };
         let postDataConsumption = {
             consumption: +amount,
             descrtiption: descript,
+            category: categories[selectCategKey].name
         };
         let postKey = firebase.database().ref().child(selectCategKey).push().key;
         let updates = {};
         let updatesRecordAmout = {};
         try {
-            updates['users/' + user_uid + '/categories/' + selectCategKey + '/records/' + postKey] = checkboxIncome ? postDataIncome : postDataConsumption;
+            updates['users/' + user_uid + '/categories/records/' + postKey] = checkboxIncome ? postDataIncome : postDataConsumption;
             updateDbWriteRecord(updates);
 
             updatesRecordAmout['users/' + user_uid + '/categories/' + selectCategKey + '/total'] = checkboxIncome ?

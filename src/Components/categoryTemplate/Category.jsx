@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect,useCallback } from 'react';
 // css
 import '../../styles/categoryTemplate/category.css';
 import '../../styles/otherStyles/loader.css';
@@ -70,16 +70,19 @@ const ConnectedCategory = ({
     get_categ_success,
     newName,
     newLimit,
-    getBill }) => {
+    getBill ,
+    categories}) => {
 
-    //TODO: Сделать валидацию полей
+    const [categNames, setCategNames] = useState([]);
     const updateDbAddNewCategory = () => {
         let postCategories = {
             name: newName,
             limit: newLimit,
         };
         if (newLimit > user_bill) {
-            return toastAnimation('У вас нет столько денег на счету!')
+            toastAnimation('У вас нет столько денег на счету!')
+        } else if (categNames.includes(newName)) {
+            toastAnimation('Такая категория уже существует');
         } else {
 
             let updatesNewCateg = {};
@@ -97,6 +100,17 @@ const ConnectedCategory = ({
             };
         }
     };
+
+    const getCategNames = useCallback(() => {
+        let arr = [];
+        Object.values(categories).map((categ) => {
+            arr.push(categ.name);
+        });
+        setCategNames(arr);
+    }, [categories]);
+    useLayoutEffect(() => {
+        getCategNames()
+    }, [getCategNames])
     useEffect(() => {
         getBill(user_uid);
         getCategories(user_uid);
@@ -122,11 +136,12 @@ const ConnectedCategory = ({
                 <div className="card-content">
                     {get_categ_success ?
                         <>
+                        {console.log(categNames)}
                             <h5>Редактировать категории</h5>
                             <div className="input-field">
                                 <CategorySelect />
                             </div>
-                            <AddToLimitCheckbox
+                                <AddToLimitCheckbox
                             />
                         </>
                         : <div className='loader'></div>}

@@ -51,15 +51,6 @@ const ConnectedCheckboxSortByCateg = ({
             let arr = [];
             Object.values(categories).map((categ) => arr.push(categ.name));
             return arr.filter(Boolean);
-
-            /* 
-            let obj = {};
-            let len = arr.length;
-            for (let i = 0; i < len; i++) {
-                let curVal = arr[i];
-                obj[curVal] = null;
-            }
-            return obj; */
         }, [categories]);
 
     return (

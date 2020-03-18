@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {getCategories, getCategRecords} from '../../store/actions/index';
 import '../../styles/otherStyles/loader.css';
@@ -23,8 +23,6 @@ const mapDispatchToProps = (dispatch) => ({
     },
 });
 
-
-
 const ConnectedRecordsTable = ({
     user_uid,
     get_records_success,
@@ -40,7 +38,6 @@ const ConnectedRecordsTable = ({
     return (
         get_records_success ? (
             <table>
-            {console.log(records)}
                 <thead>
                     <tr>
                     <th>#</th>
@@ -76,7 +73,10 @@ const RecordsTable = connect(
 ConnectedRecordsTable.propTypes = {
     user_uid: PropTypes.string.isRequired,
     get_records_success: PropTypes.bool.isRequired,
-    records: PropTypes.object.isRequired,
+    records: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array
+    ]),
     sortBySumCheckbox: PropTypes.bool.isRequired,
     sortByCategCheckbox: PropTypes.bool.isRequired,
     sortByCategSelect: PropTypes.string,

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import '../../styles/templatesStyle/auth.css'
 import firebase from 'firebase/app';
 import 'firebase/auth'
+import PropTypes from 'prop-types';
 
 import { Redirect, Route, Switch } from 'react-router-dom';
 
@@ -92,5 +93,9 @@ const ConnectedRegister = ({ bool }) => {
 const Register = connect(
     mapStateToProps
 )(ConnectedRegister);
+
+ConnectedRegister.propTypes = {
+    bool: PropTypes.bool.isRequired
+}
 
 export default Register

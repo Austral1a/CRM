@@ -1,9 +1,10 @@
 $custom-card-back-color: #AFAFFF;
-.user-information {
-    margin: 0 2.5rem 0 2.5rem ;
-}
+$card-user-inf-back-color: #85AAE8;
 
-.custom-card {
+.custom-card-change-bill {
     width: 30vw;
-    background-color: $custom-card-back-color !important;   
+    background-color: $custom-card-back-color !important;
+    button {
+        background-color: $card-user-inf-back-color !important;
+    }
 }

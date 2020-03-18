@@ -1,0 +1,15 @@
+$collapsible-header-back-color: #5468B5;
+$collabsible-body-btn-color: #AFAFFF;
+.collapsible-header {
+    background-color: $collapsible-header-back-color !important;
+    padding: .5rem .4rem !important;
+    i {
+        margin-left: auto !important;
+    }
+};
+.collapsible-body {
+    padding: 1rem !important;
+    button {
+        background-color: $collabsible-body-btn-color !important;
+    }
+}

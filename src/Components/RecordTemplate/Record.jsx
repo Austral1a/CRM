@@ -53,8 +53,7 @@ const ConnectedRecord = ({
                 if (categories[key].name === selectValue) {
                     setSelectCategKey(key);
                 }
-                return null;
-            })
+            });
         }, [categories, selectValue]);
 
     const writeRecordDb = () => {

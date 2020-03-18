@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 import '../../styles/otherStyles/loader.css';
 import '../../styles/surveyStyle/survey.css';
 
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { tooltipAnimation, tooltipDestroy } from '../../css-materialize animations/tooltip.js';
@@ -44,14 +45,14 @@ const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_ui
         } else if (categ.limit - categ.total > 0) {
             return `Осталось: ${categ.limit - (categ.limit - categ.total)} грн`;
         }
-    } 
+    }
     return (
         <div className="wrapper-survey">
             <div className='categories-progress'>
                 <h4>Обзор категорий</h4>
                 {get_categ_success ? Object.values(categories).map((categ) => {
                     return (
-                        <>
+                        <React.Fragment key={categ.name}>
                             {categ.total ?
                                 <>
                                     <h5>{categ.name}: {categ.limit - categ.total} грн из {categ.limit} грн</h5>
@@ -63,7 +64,7 @@ const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_ui
                                     </div>
                                 </>
                                 : <h5>В категории {categ.name} вы пока не добавляли записей</h5>}
-                        </>
+                        </React.Fragment>
                     );
                 }) : <div className='loader'></div>}
             </div>
@@ -75,5 +76,12 @@ const Survey = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedSurvey);
+
+ConnectedSurvey.propTypes = {
+    get_categ_success: PropTypes.bool.isRequired,
+    categories: PropTypes.object.isRequired,
+    user_uid: PropTypes.string.isRequired,
+    getCategories: PropTypes.func.isRequired
+}
 
 export default Survey;

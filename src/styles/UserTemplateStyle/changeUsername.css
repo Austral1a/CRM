@@ -1,0 +1,17 @@
+.collapsible-header {
+  background-color: #5468B5 !important;
+  padding: .5rem .4rem !important;
+}
+
+.collapsible-header i {
+  margin-left: auto !important;
+}
+
+.collapsible-body {
+  padding: 1rem !important;
+}
+
+.collapsible-body button {
+  background-color: #AFAFFF !important;
+}
+/*# sourceMappingURL=changeUsername.css.map */

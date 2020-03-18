@@ -8,7 +8,6 @@ import {
     setCheckboxSortBySumTrue,
     setCheckboxSortBySumFalse
 } from '../../../store/actions/index';
-import { useEffect } from 'react';
 
 
 const mapStateToProps = (state) => ({

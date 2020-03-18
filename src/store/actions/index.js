@@ -25,6 +25,9 @@ import {
     SET_SORT_RECORDS_BY_CATEG_TRUE,
     SET_SORT_RECORDS_BY_CATEG_FALSE,
     SET_SELECT_SORT_BY_CATEG,
+    GET_USERNAME_SUCCESS,
+    GET_USERNAME_ERROR
+
 } from './constants/action-types';
 import firebase from 'firebase';
 // action creator as well, just with async doings, 
@@ -127,6 +130,7 @@ export const getCategories = (user_uid) => {
         try {
             firebase.database().ref(`users/${user_uid}/categories`).on('value', (snapshot) => {
                 let categoriesData = (snapshot.val() || {});
+                delete categoriesData.records;
                 dispatch(getCategoriesSuccess(categoriesData));
             });
         } catch {
@@ -141,6 +145,32 @@ export const getCategoriesSuccess = (categories) => ({
 });
 export const getCategoriesError = () => ({
     type: GET_CATEGORIES_ERROR,
+});
+
+////////////////////
+// get user username
+
+export const getUsername = (user_uid) => {
+    return (dispatch) => {
+        try {
+            firebase.database().ref(`users/${user_uid}/info/username`).on('value', (snapshot) => {
+                let username = (snapshot.val());
+                dispatch(getUsernameSuccess(username));
+            });
+        } catch {
+            dispatch(getUsernameError('Невозможно получить ваше username'));
+        }
+    };
+};
+
+export const getUsernameSuccess = (username) => ({
+    type: GET_USERNAME_SUCCESS,
+    username,
+});
+
+export const getUsernameError = (error) => ({
+    type: GET_USERNAME_ERROR,
+    error,
 });
 
 ////////////////////

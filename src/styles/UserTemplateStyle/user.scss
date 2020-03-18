@@ -1,6 +1,14 @@
-.user-information {
+$card-user-inf-back-color: #85AAE8;
+.wrapper-user {
     display: flex;
     flex-direction: column;
     text-align: center;
-    
+    margin: 0 1rem 0 2.5rem;
+}
+.custom-card-user-information {
+    background-color: $card-user-inf-back-color !important;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
 }

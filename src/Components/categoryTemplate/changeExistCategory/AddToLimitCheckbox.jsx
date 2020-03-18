@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import {
     setCategoryCheckBoxTrue,
     setCategoryCheckboxFalse,
@@ -48,5 +48,11 @@ const AddToLimitCheckbox = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedAddToLimitCheckbox);
+
+ConnectedAddToLimitCheckbox.propTypes = {
+    checkbox: PropTypes.bool.isRequired,
+    checkboxOnChangeTrue: PropTypes.func.isRequired,
+    checkboxOnChangeFalse: PropTypes.func.isRequired
+}
 
 export default AddToLimitCheckbox;

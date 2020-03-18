@@ -1,9 +1,9 @@
-.user-information {
-  margin: 0 2.5rem 0 2.5rem;
-}
-
-.custom-card {
+.custom-card-change-bill {
   width: 30vw;
   background-color: #AFAFFF !important;
+}
+
+.custom-card-change-bill button {
+  background-color: #85AAE8 !important;
 }
 /*# sourceMappingURL=cardActions.css.map */

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../../styles/templatesStyle/auth.css'
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import {
-    Link,
     Switch,
     Route,
     Redirect
@@ -12,6 +10,7 @@ import { connect } from 'react-redux';
 import { signInUser } from '../../store/actions/index';
 import { currentSignedInUser } from '../../store/actions/index';
 import '../../styles/otherStyles/loader.css';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = (state) => {
     return {
@@ -29,7 +28,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-// TODO: При успешном логине перезагружать страницу
 const ConnectedLogin = ({ signUserIn, currUser, error, bool }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -74,6 +72,11 @@ const ConnectedLogin = ({ signUserIn, currUser, error, bool }) => {
             </Switch>
         </>
     )
+}
+
+ConnectedLogin.propTypes = {
+    error: PropTypes.string.isRequired,
+    bool: PropTypes.bool.isRequired
 }
 
 const Login = connect(

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import '../../styles/categoryTemplate/category.css';
 import '../../styles/otherStyles/loader.css';
 //
+import PropTypes from 'prop-types';
 // redux stuff
 import { connect } from 'react-redux';
 //
@@ -104,13 +105,9 @@ const ConnectedCategory = ({
         }
     }, [getCategories, user_uid, getBill]);
 
-
-
-
     return (
         <div className='wrapper-category'>
             <div className="card category-create">
-                {console.log(user_bill)}
                 <div className="card-content">
                     <h5>Новая категория</h5>
                     <AddToCategoryName />
@@ -143,5 +140,16 @@ const Category = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedCategory);
+
+ConnectedCategory.propTypes = {
+    user_bill: PropTypes.number.isRequired,
+    user_uid: PropTypes.string.isRequired,
+    getCategories: PropTypes.func.isRequired,
+    updateDb: PropTypes.func.isRequired,
+    get_categ_success: PropTypes.bool.isRequired,
+    newName: PropTypes.string.isRequired,
+    newLimit: PropTypes.string.isRequired,
+    getBill: PropTypes.func.isRequired
+}
 
 export default Category;

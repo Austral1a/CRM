@@ -60,7 +60,7 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                         baseDuration,
                         startTime,
                         commitTime,
-                        interactions) => (
+                        interactions) => console.log(
                             id,
                             phase,
                             actualDuration,
@@ -106,7 +106,10 @@ const Navbar = connect(
 
 ConnectedNavbar.propTypes = {
     currUser: PropTypes.func.isRequired,
-    // user: PropTypes.object.isRequired, ????
+    user: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.object
+    ]),
     bool: PropTypes.bool.isRequired,
 }
 

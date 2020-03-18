@@ -6,6 +6,10 @@
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
+.btn {
+    width: 100%;
+    margin-left: 0 !important;
+}
 @mixin input($prop, $val) {
     #{$prop}: $val;
 }

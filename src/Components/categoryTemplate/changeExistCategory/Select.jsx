@@ -12,7 +12,6 @@ import { updateDb } from '../../../store/actions/index';
 // action for handling changes in input
 import { updateExistsCategoryLimit } from '../../../store/actions/index';
 //
-import firebase from 'firebase';
 import PropTypes from 'prop-types';
 import { toastAnimation, toastAnimationDestroy } from '../../../css-materialize animations/toast';
 import { getUserBillValue } from '../../../store/actions/index';

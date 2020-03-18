@@ -15,6 +15,7 @@ import {
     updateLimitCategReducer,
     setCategCheckboxReducer,
 } from '../reducers/category/categoryReducer';
+import getUsernameReducer from './getUsernameReducer'
 const rootReducer = combineReducers({
     signInReducer,
     currUserReducer,
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     getCategRecordsReducer,
     setRecordsSortCheckboxReducer,
     setRecordsSelectForSortByCateg,
+    getUsernameReducer
 });
 
 export default rootReducer;

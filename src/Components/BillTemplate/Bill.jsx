@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useEffect } from 'react';
 //css
 import '../../styles/BillStyle/bill.css';
 import '../../styles/otherStyles/loader.css';
 //
 //react-redux
 import { connect } from 'react-redux';
-//
-// tooltip animation
-import { tooltipAnimation, tooltipDestroy } from '../../css-materialize animations/tooltip';
 //
 
 // toast animation
@@ -65,11 +62,13 @@ const ConnectedBill = ({
 }) => {
 
     useEffect(() => {
+        getCurrencies();
         if (bool) {
             getBill(user_uid);
         };
-
-        getCurrencies();
+        return () => {
+            toastAnimationDestroy();
+        }
     }, [bool, getBill, user_uid, getCurrencies, isFetchFixerSuccess, fetchFixerError]);
 
 
@@ -84,13 +83,16 @@ const ConnectedBill = ({
                             !fetchFixerError ? toastAnimation('Цены были успешно обновлены') : toastAnimation('Невозможно получить данные');
                             getCurrencies();
                         }} />
-                        {isFetchFixerSuccess ? <table className="currencies-list">
+                        {console.log(currencies)}
+                        {isFetchFixerSuccess ? 
+                        <table className="currencies-list">
                             <tbody>
                                 {Object.keys(currencies).map((currency) => {
                                     return (
                                         <tr key={currency}>
                                             <td key={currencies[currency]}>{currency}</td>
                                             <td key={Math.random()}>{toFixed(user_bill / (currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
+                                            <td key={Math.random()}>{toFixed((currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
                                         </tr>
                                     )
                                 })}

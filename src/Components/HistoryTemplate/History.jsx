@@ -1,38 +1,11 @@
 import React from 'react';
 import '../../styles/otherStyles/loader.css';
 import '../../styles/historyStyles/history.css';
-/* import {
-    useLocation
-} from 'react-router-dom';
- */
-//import {autocomplete, autocompleteDestroy} from '../../css-materialize animations/autocomplete';
-/* 
-import {connect} from 'react-redux';
-
-import {getCategRecords} from '../../store/actions/index';
-
-import {getCategories} from '../../store/actions/index';
- */
 import CheckboxSortBySum from './sortingComponents/sortBySum';
 import RecordsTable from './recordsTable';
 import CheckboxSortByCateg from './sortingComponents/sortByCateg';
-/* const mapStateToProps = (state) => ({
-    
-});
 
-const mapDispatchToProps = (dispatch) => ({
-    
-});
- */
 const History = () => {
-    
-    
-    /* useEffect(() => {
-        return () => {
-            //autocompleteDestroy();
-        }
-    }, [autocompletedRef])
- */
     return (
         <div className='wrapper-history'>
         <div className='history-description'>
@@ -53,10 +26,5 @@ const History = () => {
         </div>
     );
 };
-/* 
-const History = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ConnectedHistory);
- */
+
 export default History;

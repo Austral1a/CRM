@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,mBAAmB,CAAC;EAChB,gBAAgB,EAHY,OAAO,CAGc,UAAU;EAC3D,OAAO,EAAE,sBAAsB;CAIlC;;AAND,AAGI,mBAHe,CAGf,CAAC,CAAC;EACE,WAAW,EAAE,eAAe;CAC/B;;AAEL,AAAA,iBAAiB,CAAC;EACd,OAAO,EAAE,eAAe;CAI3B;;AALD,AAEI,iBAFa,CAEb,MAAM,CAAC;EACH,gBAAgB,EAXK,OAAO,CAWkB,UAAU;CAC3D",
+    "sources": [
+        "changeUsername.scss"
+    ],
+    "names": [],
+    "file": "changeUsername.css"
+}

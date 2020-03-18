@@ -13,6 +13,7 @@ import { toastAnimation, toastAnimationDestroy } from '../../css-materialize ani
 import PropTypes from 'prop-types';
 
 import { updateDb } from '../../store/actions/index';
+import dateFilter from '../../filters/dateFilter';
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
     categories: state.getCategoriesReducer.categories,
@@ -62,13 +63,13 @@ const ConnectedRecord = ({
             income: +amount,
             descrtiption: descript,
             category: categories[selectCategKey].name,
-            time: new Date(),
+            time: dateFilter(new Date(), ['historyDate', 'time']),
         };
         let postDataConsumption = {
             consumption: +amount,
             descrtiption: descript,
             category: categories[selectCategKey].name,
-            time: new Date(),
+            time: dateFilter(new Date(), ['historyDate', 'time']),
         };
         let postKey = firebase.database().ref().child(selectCategKey).push().key;
         let updates = {};

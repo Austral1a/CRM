@@ -18,6 +18,13 @@ import {
     GET_CURRENCIES_ERROR,
     GET_RECORDS_SUCCESS,
     GET_RECORDS_ERROR,
+    RECORDS_SORT_BY_SUM,
+    RECORDS_SORT_BY_CATEGORY,
+    SET_SORT_RECORDS_BY_SUM_TRUE,
+    SET_SORT_RECORDS_BY_SUM_FALSE,
+    SET_SORT_RECORDS_BY_CATEG_TRUE,
+    SET_SORT_RECORDS_BY_CATEG_FALSE,
+    SET_SELECT_SORT_BY_CATEG,
 } from './constants/action-types';
 import firebase from 'firebase';
 // action creator as well, just with async doings, 
@@ -151,13 +158,11 @@ export const updateExistsCategoryLimit = (limit) => ({
     changeLimit: limit,
 });
 
-export const setCategoryCheckBoxTrue = (isChecked) => ({
+export const setCategoryCheckBoxTrue = () => ({
     type: CHANGE_EXISTS_CATEGORY_CHECKBOX_TRUE,
-    isChecked,
 });
-export const setCategoryCheckboxFalse = (isChecked) => ({
+export const setCategoryCheckboxFalse = () => ({
     type: CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
-    isChecked,
 });
 
 ///////////////////
@@ -206,7 +211,38 @@ export const getCategRecordsSuccess = (records) => ({
     type: GET_RECORDS_SUCCESS,
     records,
 });
-
 export const getCategRecordsError = () => ({
-    type: GET_RECORDS_ERROR
+    type: GET_RECORDS_ERROR 
+});
+
+// actions for sorting records by some param
+export const sortRecordsBySum = () => ({
+    type: RECORDS_SORT_BY_SUM,
+});
+
+export const sortRecordsByCateg = (categ_name) => ({
+    type: RECORDS_SORT_BY_CATEGORY,
+    categ_name
+});
+//////////////////
+// sorting checkboxes state 
+export const setCheckboxSortBySumTrue = () => ({
+    type: SET_SORT_RECORDS_BY_SUM_TRUE,
+});
+
+export const setCheckboxSortBySumFalse = () => ({
+    type: SET_SORT_RECORDS_BY_SUM_FALSE,
+});
+
+export const setCheckboxSortByCategTrue = () => ({
+    type: SET_SORT_RECORDS_BY_CATEG_TRUE
+});
+
+export const setCheckboxSortByCategFalse = () => ({
+    type: SET_SORT_RECORDS_BY_CATEG_FALSE
+});
+
+export const setSelectSortByCateg = (value) => ({
+    type: SET_SELECT_SORT_BY_CATEG,
+    value
 });

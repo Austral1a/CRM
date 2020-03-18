@@ -1,8 +1,9 @@
+$table-filter-back-color: #5468B5;
+
 @mixin arrivingColorType($income) {
     display: inline-block;
     padding: 0 16px;
-    border: 2px solid #fff;
-    border-radius: 25px;
+    border: 1px solid #fff;
     
     @if $income {
         background-color: #52BE68;
@@ -11,21 +12,40 @@
     }
 }
 .wrapper-history {
-    margin: 0 0 0 2.5rem;
+    margin: 0 1rem 0 2.5rem;
 }
 .history-description {
     display: inline-block;
-    margin-bottom: 168px;
+    margin-bottom: 50px;
 }
-
+.custom-card-table {
+    margin-right: 1rem;
+    background-color: #FFBC3E !important;
+}
 table {
     width: 95% !important;
     color: #fff;
     font-size: 1.3rem;
+    thead {
+        th {
+            padding-top: 0 !important;
+        }
+    }
+    tbody {
+        display: block;
+        max-height: 400px !important;
+        overflow-y: auto;
+    }
     tr {
         border-color: #fff;
     };
 };
+
+table, thead, tbody, tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 
 .income {
     @include arrivingColorType($income: true);
@@ -33,3 +53,14 @@ table {
 .consumption {
     @include arrivingColorType($income: false);
 };
+
+.custom-card-table-filter {
+    background-color: $table-filter-back-color !important;
+    input[type="checkbox"].filled-in:not(:checked)+span:not(.lever):after {
+        border-color: whitesmoke !important;
+    }
+    .card-header {
+        margin-top: 0;
+        text-align: left;
+    }
+}

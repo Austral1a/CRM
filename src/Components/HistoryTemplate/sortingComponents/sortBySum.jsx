@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {getCategRecords} from '../../../store/actions/index';
+import PropTypes from 'prop-types';
 
 import {
     sortRecordsBySum, 
@@ -66,5 +67,14 @@ const CheckboxSortBySum = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedCheckboxSortBySum);
+
+ConnectedCheckboxSortBySum.propTypes = {
+    user_uid: PropTypes.string.isRequired,
+    getRecordsSortedBySum: PropTypes.func.isRequired,
+    getCheckboxSortBySumTrue: PropTypes.func.isRequired,
+    getCheckboxSortBySumFalse: PropTypes.func.isRequired,
+    sortBySumCheckbox: PropTypes.bool.isRequired,
+    getRecords: PropTypes.func.isRequired
+}
 
 export default CheckboxSortBySum;

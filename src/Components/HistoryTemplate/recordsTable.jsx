@@ -2,6 +2,7 @@ import React, {useEffect, useLayoutEffect} from 'react';
 import {connect} from 'react-redux';
 import {getCategories, getCategRecords} from '../../store/actions/index';
 import '../../styles/otherStyles/loader.css';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
@@ -30,11 +31,6 @@ const ConnectedRecordsTable = ({
     records,
     getCategories,
     getRecords,
-    // state of sorting checbboex  is need in this comnponent to put them into array of dependencies of useEffect
-    // in order to, table could handle changes in state and re-render if user wants to sort records by some filter changes
-    sortBySumCheckbox,
-    sortByCategCheckbox,
-    sortByCategSelect,
 }) => {
 
     useEffect(() => {
@@ -77,4 +73,14 @@ const RecordsTable = connect(
     mapDispatchToProps
 )(ConnectedRecordsTable);
 
+ConnectedRecordsTable.propTypes = {
+    user_uid: PropTypes.string.isRequired,
+    get_records_success: PropTypes.bool.isRequired,
+    records: PropTypes.object.isRequired,
+    sortBySumCheckbox: PropTypes.bool.isRequired,
+    sortByCategCheckbox: PropTypes.bool.isRequired,
+    sortByCategSelect: PropTypes.string,
+    categories: PropTypes.object.isRequired
+}
+ 
 export default RecordsTable;

@@ -7,6 +7,7 @@ import {
 import {connect} from 'react-redux';
 import {sortRecordsByCateg} from '../../../store/actions/index';
 import {getCategRecords} from '../../../store/actions/index';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = (state) => ({
     sortByCategCheckbox: state.setRecordsSortCheckboxReducer.isByCategChecked,
@@ -87,6 +88,7 @@ const ConnectedCheckboxSortByCateg = ({
                         className='browser-default'
                         value={sortByCategSelect}
                         onChange={(e) => {
+                            getRecords(user_uid);
                             getSelectValueSortByCateg(e.target.value);
                             if( e.target.value ) {
                                 getRecordsSortedByCateg(e.target.value);
@@ -108,5 +110,17 @@ const CheckboxSortByCateg = connect(
     mapStateToProps,
     mapDispatchToProps
 )(ConnectedCheckboxSortByCateg);
+
+ConnectedCheckboxSortByCateg.propTypes = {
+    sortByCategCheckbox: PropTypes.bool.isRequired,
+    getRecordsSortedByCateg: PropTypes.func.isRequired,
+    getCheckboxSortByCategTrue: PropTypes.func.isRequired,
+    getCheckboxSortByCategFalse: PropTypes.func.isRequired,
+    sortByCategSelect: PropTypes.string,
+    getSelectValueSortByCateg: PropTypes.func.isRequired,
+    categories: PropTypes.object.isRequired,
+    getRecords: PropTypes.func.isRequired,
+    user_uid: PropTypes.string.isRequired,
+}
 
 export default CheckboxSortByCateg;

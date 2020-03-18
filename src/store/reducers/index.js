@@ -5,9 +5,10 @@ import userBillValueReducer from './currentUserBillValueReducer';
 import updateDbReducer from './updateDbReducer';
 import getCategoriesReducer from './getCategoriesReducer';
 import getCategRecordsReducer from './getCategRecordsReducer';
-//
 import fetchToFixerApiReducer from './fetch/fetchToFixerApiReducer';
-//
+import {
+    setRecordsSortCheckboxReducer,
+    setRecordsSelectForSortByCateg} from './records/setSortCheckboxesReducer';
 import {
     newNameCategoryReducer,
     newLimitCategoryReducer,
@@ -26,6 +27,8 @@ const rootReducer = combineReducers({
     setCategCheckboxReducer,
     fetchToFixerApiReducer,
     getCategRecordsReducer,
+    setRecordsSortCheckboxReducer,
+    setRecordsSelectForSortByCateg,
 });
 
 export default rootReducer;

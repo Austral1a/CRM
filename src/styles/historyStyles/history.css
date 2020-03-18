@@ -1,10 +1,15 @@
 .wrapper-history {
-  margin: 0 0 0 2.5rem;
+  margin: 0 1rem 0 2.5rem;
 }
 
 .history-description {
   display: inline-block;
-  margin-bottom: 168px;
+  margin-bottom: 50px;
+}
+
+.custom-card-table {
+  margin-right: 1rem;
+  background-color: #FFBC3E !important;
 }
 
 table {
@@ -13,23 +18,50 @@ table {
   font-size: 1.3rem;
 }
 
+table thead th {
+  padding-top: 0 !important;
+}
+
+table tbody {
+  display: block;
+  max-height: 400px !important;
+  overflow-y: auto;
+}
+
 table tr {
   border-color: #fff;
+}
+
+table, thead, tbody, tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .income {
   display: inline-block;
   padding: 0 16px;
-  border: 2px solid #fff;
-  border-radius: 25px;
+  border: 1px solid #fff;
   background-color: #52BE68;
 }
 
 .consumption {
   display: inline-block;
   padding: 0 16px;
-  border: 2px solid #fff;
-  border-radius: 25px;
+  border: 1px solid #fff;
   background-color: #E43A37;
+}
+
+.custom-card-table-filter {
+  background-color: #5468B5 !important;
+}
+
+.custom-card-table-filter input[type="checkbox"].filled-in:not(:checked) + span:not(.lever):after {
+  border-color: whitesmoke !important;
+}
+
+.custom-card-table-filter .card-header {
+  margin-top: 0;
+  text-align: left;
 }
 /*# sourceMappingURL=history.css.map */

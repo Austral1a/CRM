@@ -60,7 +60,7 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                         baseDuration,
                         startTime,
                         commitTime,
-                        interactions) => console.log(
+                        interactions) => (
                             id,
                             phase,
                             actualDuration,

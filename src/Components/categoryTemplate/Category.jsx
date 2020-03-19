@@ -83,7 +83,13 @@ const ConnectedCategory = ({
             toastAnimation('У вас нет столько денег на счету!')
         } else if (categNames.includes(newName)) {
             toastAnimation('Такая категория уже существует');
-        } else {
+        } else if (newName == '') {
+            toastAnimation('Введите корректное название');
+        } 
+        else if (newLimit <= 0) {
+            toastAnimation('Введите корректный лимит');
+        } 
+        else {
 
             let updatesNewCateg = {};
             let postKey = firebase.database().ref().child(`users${user_uid}`).push().key;
@@ -136,7 +142,6 @@ const ConnectedCategory = ({
                 <div className="card-content">
                     {get_categ_success ?
                         <>
-                        {console.log(categNames)}
                             <h5>Редактировать категории</h5>
                             <div className="input-field">
                                 <CategorySelect />

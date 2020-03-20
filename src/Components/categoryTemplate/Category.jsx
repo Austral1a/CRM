@@ -81,7 +81,7 @@ const ConnectedCategory = ({
         };
         if (newLimit > user_bill) {
             toastAnimation('У вас нет столько денег на счету!')
-        } else if (categNames.includes(newName)) {
+        } else if (categNames.includes(newName.toLowerCase())) {
             toastAnimation('Такая категория уже существует');
         } else if (newName == '') {
             toastAnimation('Введите корректное название');
@@ -110,7 +110,7 @@ const ConnectedCategory = ({
     const getCategNames = useCallback(() => {
         let arr = [];
         Object.values(categories).map((categ) => {
-            arr.push(categ.name);
+            arr.push(categ.name.toLowerCase());
         });
         setCategNames(arr);
     }, [categories]);

@@ -15,7 +15,9 @@ import {
     updateLimitCategReducer,
     setCategCheckboxReducer,
 } from '../reducers/category/categoryReducer';
-import getUsernameReducer from './getUsernameReducer'
+import getUsernameReducer from './getUsernameReducer';
+import createVisitedPagesReducer from './createVisitedPages';
+import getVisitedPagesReducer from './getVisitedPages';
 const rootReducer = combineReducers({
     signInReducer,
     currUserReducer,
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
     getCategRecordsReducer,
     setRecordsSortCheckboxReducer,
     setRecordsSelectForSortByCateg,
-    getUsernameReducer
+    getUsernameReducer,
+    createVisitedPagesReducer,
+    getVisitedPagesReducer
 });
 
 export default rootReducer;

@@ -20,7 +20,8 @@ import dateFilter from '../../filters/dateFilter';
 const mapStateToProps = (state) => {
     return {
         user: state.currUserReducer.user,
-        bool: state.currUserReducer.bool
+        isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
+        isUserAnonymous: state.currUserReducer.isUserAnonymous,
     };
 };
 
@@ -30,11 +31,16 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-let ConnectedNavbar = ({ currUser, user, bool }) => {
+let ConnectedNavbar = ({ 
+    currUser, 
+    user, 
+    isUserLoggedIn,
+    isUserAnonymous
+ }) => {
     const [currDateTime, setCurrDateTime] = useState('');
     useEffect(() => {
         currUser();
-    });
+    }, [currUser]);
 
     useLayoutEffect(() => {
         let interval = setInterval(() => {
@@ -47,10 +53,10 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
     }, [])
     return (
         <nav className="nav-extend teal">
-            {bool ? <div className="nav-content">
+            {!isUserAnonymous ? <div className="nav-content">
                 <ul>
                     <li className="left">
-                        <a href='#'
+                        <a
                             data-target="slide-out"
                             className="sidenav-trigger show-on-large"><i className="material-icons">menu</i></a>
                     </li>
@@ -70,7 +76,7 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                             interactions)}>
                         {String(currDateTime)}
                     </Profiler>
-                    {!bool ? (
+                    {isUserAnonymous ? (
                         <>
                             <li className="right">
                                 <Link exact='true' to='/login'>Login</Link>
@@ -85,8 +91,6 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                             onClick={() => {
                                 if (firebase.auth().currentUser) {
                                     firebase.auth().signOut();
-                                } else {
-                                    console.log('Error occurs');
                                 }
                             }}>
                             Выйти
@@ -94,7 +98,14 @@ let ConnectedNavbar = ({ currUser, user, bool }) => {
                         <li className='right '>{user.email}</li>
                     </>)}
                 </ul>
-            </div> : <div className='loader' />}
+            </div> : <ul>
+                        <li className="right">
+                            <Link exact='true' to='/login'>Login</Link>
+                        </li>
+                        <li className="right">
+                            <Link exact='true' to="/register">Register</Link>
+                        </li>
+                    </ul>}
         </nav>
     )
 };
@@ -110,7 +121,7 @@ ConnectedNavbar.propTypes = {
         PropTypes.string,
         PropTypes.object
     ]),
-    bool: PropTypes.bool.isRequired,
+    isUserAnonymous: PropTypes.bool.isRequired,
 }
 
 export default Navbar;

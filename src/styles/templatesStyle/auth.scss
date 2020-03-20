@@ -5,18 +5,22 @@ body {
     color: $text-color;
 }
 
-
-form {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    align-items: center;
-    margin-top: 8rem;
-    .wrap > * {
-        width: 18rem;
+.wrapper-login-register { 
+    margin-top: 10rem;
+}
+.custom-card-login-register {
+    width: 50%;
+    margin: 0 auto !important;
+    background: rgb(143, 78, 185) !important;
+    background: linear-gradient(90deg, rgba(131,58,180,1) 10%, rgba(165,100,250,1) 49%, rgba(252,176,69,1) 100%) !important;
+    h5 {
+        margin: 0 !important;
+        text-align: center;
     }
-    .wrap {
-        background-color: whitesmoke;
-        padding: 5rem 3rem 5rem 3rem;
+    button[type='submit'] {
+        width: 100%;
+        color: #fff;
+        background: rgb(131,58,180) !important;
+        background: linear-gradient(270deg, rgba(131,58,180,1) 1%, rgba(165,100,250,1) 49%, rgba(252,176,69,1) 100%) !important;
     }
 }

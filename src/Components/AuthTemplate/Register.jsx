@@ -1,24 +1,36 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/templatesStyle/auth.css'
 import firebase from 'firebase/app';
 import 'firebase/auth'
 import PropTypes from 'prop-types';
+import '../../styles/templatesStyle/auth.css';
 
 import { Redirect, Route, Switch } from 'react-router-dom';
+import {toastAnimation, toastAnimationDestroy} from '../../css-materialize animations/toast'; 
+import {createVisitedPages} from '../../store/actions/index';
 
-
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
     return {
-        bool: state.currUserReducer.bool,
-    }
-}
+        isUserAnonymous: state.currUserReducer.isUserAnonymous,
+    };
+};
 
-const ConnectedRegister = ({ bool }) => {
+const mapDispatchToProps = (dispatch) => ({
+    createVisitedPages: (user_uid) => {
+        dispatch(createVisitedPages(user_uid));
+    }
+});
+
+const ConnectedRegister = ({ 
+    isUserAnonymous,
+    createVisitedPages,
+     }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+
 
     const writeUserData = async (uid) => {
         firebase.database().ref(`users/${uid}/info`).set({
@@ -30,23 +42,56 @@ const ConnectedRegister = ({ bool }) => {
         })
     };
 
+    const emailValidate = (email) => {
+        return /[a-zA-Z]+@[a-zA-Z]+\.[a-z]{0,5}/.test(email)
+    }
+
     const getUid = () => {
         const user = firebase.auth().currentUser;
         return user ? user.uid : null;
-    }
+    };
+    const onSubmit = async () => {
+        if( email.trim() == '') {
+            toastAnimation('Введите Email');
+        } else if (!emailValidate(email.trim())) {
+            toastAnimation('Нужен корректный Email: email@mail.com');
+        }
+        else if (password.trim() == '') {
+            toastAnimation('Введите пароль');
+        } else if ( username.trim() == '') {
+            toastAnimation('Имя пользователя должно содержать хотя-бы 1 символ');
+        } else {
+            try {
+                await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const uid = getUid();
+                writeUserData(uid);
+                toastAnimation('Регистрация прошла успешно');
+                createVisitedPages(getUid());
+            } catch {
+                toastAnimation('Такой email уже существует');
+            }
+        };
+    };
+
+    useEffect(() => {
+        return () => {
+            toastAnimationDestroy();
+        }
+    }, []);
+
 
     return (
         <>
-            <div className="row center">
+            <div className="wrapper-login-register">
+            <div className="card custom-card-login-register">
+                <div className="card-content">
                 <form
                     className="col s12"
-                    onSubmit={async (e) => {
+                    onSubmit={(e) => {
                         e.preventDefault();
-                        await firebase.auth().createUserWithEmailAndPassword(email, password);
-                        const uid = getUid();
-                        await writeUserData(uid);
+                        onSubmit();
                     }}>
-                    <h2>Регистрация</h2>
+                    <h5>Регистрация</h5>
                     <div className="wrap">
                         <div className='input-field'>
                             <input
@@ -69,21 +114,21 @@ const ConnectedRegister = ({ bool }) => {
                             <input
                                 id='username'
                                 type="text"
-                                className='validate'
                                 onChange={(e) => setUsername(e.target.value)} />
                             <label htmlFor="username">Username</label>
                         </div>
-                        <input
+                        <button
                             type='submit'
-                            className='waves-effect waves-light btn-small'
-                            value='Зарегисрироватся'
-                        />
+                            className='waves-effect waves-light btn btn-small'
+                        >зарегистрироваться</button>
                     </div>
                 </form>
             </div>
+                </div>
+            </div>
             <Switch>
                 <Route path="/register">
-                    {bool ? <Redirect to='/you' /> : null}
+                    {!isUserAnonymous ? <Redirect to='/you' /> : null}
                 </Route>
             </Switch>
         </>
@@ -91,11 +136,12 @@ const ConnectedRegister = ({ bool }) => {
 }
 
 const Register = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ConnectedRegister);
 
 ConnectedRegister.propTypes = {
-    bool: PropTypes.bool.isRequired
+    isUserAnonymous: PropTypes.bool.isRequired
 }
 
 export default Register

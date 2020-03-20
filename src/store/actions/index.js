@@ -26,12 +26,20 @@ import {
     SET_SORT_RECORDS_BY_CATEG_FALSE,
     SET_SELECT_SORT_BY_CATEG,
     GET_USERNAME_SUCCESS,
-    GET_USERNAME_ERROR
+    GET_USERNAME_ERROR,
+    FIRST_VISIT_YOU_PAGE,
+    FIRST_VISIT_HISTORY_PAGE,
+    FIRST_VISIT_BILL_PAGE,
+    FIRST_VISIT_CATEGORY_PAGE,
+    FIRST_VISIT_RECORDS_PAGE,
+    FIRST_VISIT_SURVEY_PAGE,
+    GET_VISITED_PAGES_SUCCESS,
+    GET_VISITED_PAGES_ERROR,
+    CREATE_VISITED_PAGES_SUCCESS,
+    CREATE_VISITED_PAGES_ERROR
 
 } from './constants/action-types';
 import firebase from 'firebase';
-// action creator as well, just with async doings, 
-//  that means action-creator returns a func rather than action
 export const signInUser = (email, password) => {
     return (dispatch) => {
         firebase.auth().signInWithEmailAndPassword(email, password)
@@ -62,9 +70,6 @@ export const currentSignedInUser = () => {
             if (user) {
                 dispatch(currentUserNotAnonymous(user));
             } else {
-                const user = {
-                    email: 'none',
-                }
                 dispatch(currentUserIsAnonymous(user));
             }
         });
@@ -194,7 +199,6 @@ export const setCategoryCheckBoxTrue = () => ({
 export const setCategoryCheckboxFalse = () => ({
     type: CHANGE_EXISTS_CATEGORY_CHECKBOX_FALSE,
 });
-
 ///////////////////
 //  fetch to fixer api
 
@@ -202,8 +206,9 @@ export const fetchFixer = () => {
     return async (dispatch) => {
         try {
             const res = await fetch(`http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
-            const data = await res.json();
-            dispatch(fetchFixerSuccess(data.rates));
+            let data = await res.json();
+            data = data.rates;
+            dispatch(fetchFixerSuccess(data));
         } catch {
             dispatch(fetchFixerError('Невозможно получить данные'));
         };
@@ -275,4 +280,119 @@ export const setCheckboxSortByCategFalse = () => ({
 export const setSelectSortByCateg = (value) => ({
     type: SET_SELECT_SORT_BY_CATEG,
     value
+});
+
+//////////////
+// set visited page(for modal)
+// Вызвать эту функц при успешной регистрации
+export const createVisitedPages = (user_uid) => {
+    return (dispatch)  => {
+        try { 
+            firebase.database().ref(`users/${user_uid}/info/isVisitedPages/`).set({
+                you_page: false,
+                history_page: false,
+                bill_page: false,
+                category_page: false,
+                records_page: false,
+                survey_page: false
+            });
+            dispatch(visitedPagesCreatedSuccess());
+        } catch {
+            dispatch(visitedPagesCreatedError());
+        };
+    };
+};
+
+//TODO: Получить состояние просмотреных страниц
+export const getVisitedPages = (user_uid) => {
+    return (dispatch) => {
+        try {
+            firebase.database().ref(`users/${user_uid}/info/isVisitedPages/`).on('value', (snapshot) => {
+                snapshot.forEach((el) => {
+                    let pages = snapshot.val();
+                    dispatch(getVisitedPagesSuccess(
+                        pages.you_page,
+                        pages.bill_page,
+                        pages.category_page,
+                        pages.history_page,
+                        pages.records_page,
+                        pages.survey_page,
+                    ));
+                })
+            });
+        }
+        catch {
+            dispatch(getVisitedPagesError());
+        };
+    };
+};
+
+//////////// getting visited pages state 
+export const getVisitedPagesSuccess = (you_page, bill_page, category_page, history_page, records_page, survey_page) => ({
+    type: GET_VISITED_PAGES_SUCCESS,
+    you_page,
+    bill_page,
+    category_page,
+    history_page,
+    records_page,
+    survey_page,
+});
+
+export const getVisitedPagesError = () => ({
+type: GET_VISITED_PAGES_ERROR,
+});
+
+//TODO: Поменять состояние просмотреных страниц ( func )
+// Каждый action обработать т.е получаем нужный state странциы и меняем с помощью action ( когда юзер нажимает на кнопку ЗАКРЫТЬ в модальном окне) 
+
+// you page
+export const setFirstVisitYouPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateYouPage = {};
+            updateYouPage['users/' + user_uid + '/info/isVisitedPages/you_page'] = true;
+            await (firebase.database().ref().update(updateYouPage));
+    };
+};
+export const setFirstVisitHistoryPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateHistoryPage = {}
+            updateHistoryPage['users/' + user_uid + '/info/isVisitedPages/history_page'] = true; 
+            await firebase.database().ref().update(updateHistoryPage);
+    };
+};
+export const setFirstVisitBillPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateBillPage = {}
+            updateBillPage['users/' + user_uid + '/info/isVisitedPages/bill_page'] = true; 
+            await firebase.database().ref().update(updateBillPage);
+    };
+};
+export const setFirstVisitCategoryPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateCategoryPage = {}
+            updateCategoryPage['users/' + user_uid + '/info/isVisitedPages/category_page'] = true; 
+            await firebase.database().ref().update(updateCategoryPage);
+    };
+};
+export const setFirstVisitRecordsPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateRecordsPage = {}
+            updateRecordsPage['users/' + user_uid + '/info/isVisitedPages/records_page'] = true; 
+            await firebase.database().ref().update(updateRecordsPage);
+    };
+};
+export const setFirstVisitSurveyPage = (user_uid) => {
+    return async (dispatch) => {
+            let updateSurveyPage = {}
+            updateSurveyPage['users/' + user_uid + '/info/isVisitedPages/survey_page'] = true; 
+            await firebase.database().ref().update(updateSurveyPage);
+    };
+}; 
+////////////////
+export const visitedPagesCreatedSuccess = () => ({
+    type: CREATE_VISITED_PAGES_SUCCESS,
+});
+
+export const visitedPagesCreatedError = () => ({
+    type: CREATE_VISITED_PAGES_ERROR,
 });

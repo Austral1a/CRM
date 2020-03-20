@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 const mapStateToProps = (state) => {
     return {
         error: state.signInReducer.error,
-        bool: state.currUserReducer.bool
+        isUserAnonymous: state.currUserReducer.isUserAnonymous,
     }
 };
 
@@ -28,46 +28,50 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const ConnectedLogin = ({ signUserIn, currUser, error, bool }) => {
+const ConnectedLogin = ({ signUserIn, currUser, error, isUserAnonymous }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     return (
         <>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                signUserIn(email, password);
-                currUser();
-            }}>
-                <h2>Вход в систему</h2>
-                <div className="wrap">
-                    <div className='input-field'>
-                        <input
-                            id='email'
-                            type="email"
-                            className='validate'
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <label htmlFor="email">Email</label>
+                <div className="wrapper-login-register">
+                <div className="card custom-card-login-register">
+                    <form onSubmit={(e) => {
+                    e.preventDefault();
+                    signUserIn(email, password);
+                    currUser();
+                        }}>
+                        <div className='card-content'>
+                        <h5>Вход в систему</h5>
+                        <div className='input-field'>
+                            <input
+                                id='email'
+                                type="email"
+                                className='validate'
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <label htmlFor="email">Email</label>
+                        </div>
+                            <div placeholder='Password' className='input-field'>
+                                <input
+                                    id='password'
+                                    type="password"
+                                    className='validate'
+                                    onChange={(e) => setPassword(e.target.value)} />
+                                <label htmlFor="password">Password</label>
+                            </div>
+                        <button
+                            type='submit'
+                            className='waves-effect waves-light btn btn-small'
+                            value='Войти'>Войти</button>
+                        {error ? <p className="red">{error}</p> : null}
+                        </div>
+                    </form>
                     </div>
-                    <div placeholder='Password' className='input-field'>
-                        <input
-                            id='password'
-                            type="password"
-                            className='validate'
-                            onChange={(e) => setPassword(e.target.value)} />
-                        <label htmlFor="password">Password</label>
-                    </div>
-                    <input
-                        type='submit'
-                        className='waves-effect waves-light btn-small'
-                        value='Войти' />
-                    {error ? <p className="red">{error}</p> : null}
                 </div>
-            </form>
             <Switch>
                 <Route path="/login">
-                    {bool ? <Redirect to='/you' /> : null}
+                    {!isUserAnonymous ? <Redirect to='/you' /> : null}
                 </Route>
             </Switch>
         </>
@@ -76,7 +80,7 @@ const ConnectedLogin = ({ signUserIn, currUser, error, bool }) => {
 
 ConnectedLogin.propTypes = {
     error: PropTypes.string.isRequired,
-    bool: PropTypes.bool.isRequired
+    isUserAnonymous: PropTypes.bool.isRequired
 }
 
 const Login = connect(

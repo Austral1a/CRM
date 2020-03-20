@@ -63,9 +63,7 @@ const ConnectedBill = ({
 
     useEffect(() => {
         getCurrencies();
-        if (bool) {
-            getBill(user_uid);
-        };
+        getBill(user_uid);
         return () => {
             toastAnimationDestroy();
         }
@@ -83,7 +81,6 @@ const ConnectedBill = ({
                             !fetchFixerError ? toastAnimation('Цены были успешно обновлены') : toastAnimation('Невозможно получить данные');
                             getCurrencies();
                         }} />
-                        {console.log(currencies)}
                         {isFetchFixerSuccess ? 
                         <table className="currencies-list">
                             <tbody>

@@ -5,21 +5,45 @@ import '../../styles/surveyStyle/survey.css';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import {modalAnimation, modalDestroy, modalOpen} from '../../css-materialize animations/modal';
 import { tooltipAnimation, tooltipDestroy } from '../../css-materialize animations/tooltip.js';
+import { setFirstVisitSurveyPage, getVisitedPages } from '../../store/actions/index';
 
 import { getCategories } from '../../store/actions/index';
 const mapStateToProps = (state) => ({
     get_categ_success: state.getCategoriesReducer.getCategoriesSuccess,
     categories: state.getCategoriesReducer.categories,
     user_uid: state.currUserReducer.userUid,
+    getVisitedPagesSuccess: state.getVisitedPagesReducer.getVisitedPagesSuccess,
+    isVisitedSurveyPage: state.getVisitedPagesReducer.survey_page,
 });
 const mapDispatchToProps = (dispatch) => ({
     getCategories: (user_uid) => {
         dispatch(getCategories(user_uid))
     },
+    setFirstVisitSurveyPage: (user_uid) => {
+        dispatch(setFirstVisitSurveyPage(user_uid));
+    },
+    getVisitedPages: (user_uid) => {
+        dispatch(getVisitedPages(user_uid));
+    }
 });
-const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_uid }) => {
+const ConnectedSurvey = ({ 
+    getCategories, 
+    get_categ_success, 
+    categories, 
+    user_uid,
+    isVisitedSurveyPage,
+    getVisitedPages,
+    setFirstVisitSurveyPage
+}) => {
+
+    const modelRef = useCallback(
+        (node) => {
+            if (node != null) {
+                modalAnimation(node);
+            };
+    }, []);
 
     const tooltipedRef = useCallback(
     (node) => {
@@ -30,13 +54,17 @@ const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_ui
 
     useEffect(() => {
         getCategories(user_uid);
-    }, [getCategories, user_uid]);
-    useEffect(() => {
+        getVisitedPages(user_uid);
+        if (!isVisitedSurveyPage) {
+            if(get_categ_success) {
+                modalOpen();
+            };
+        };
         return () => {
-            tooltipDestroy();
+            //tooltipDestroy();
+            modalDestroy();
         }
-    }, [])
-
+    }, [getCategories, user_uid, getVisitedPages, get_categ_success, isVisitedSurveyPage]);
     const tooltipText = (categ) => {
         if (categ.limit - categ.total > categ.limit) {
             return `Превышение на: ${Math.abs(categ.limit - (categ.limit - categ.total))} грн`
@@ -44,9 +72,15 @@ const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_ui
             return `Доход: ${Math.abs(categ.limit - categ.total)} грн`
         } else if (categ.limit - categ.total > 0) {
             return `Осталось: ${categ.limit - (categ.limit - categ.total)} грн`;
-        }
-    }
+        };
+    };
+
+    const handleClick = () => {
+        setFirstVisitSurveyPage(user_uid);
+    };
+
     return (
+        <>
         <div className="wrapper-survey">
             <div className='categories-progress'>
                 <h4>Обзор категорий</h4>
@@ -69,6 +103,22 @@ const ConnectedSurvey = ({ getCategories, get_categ_success, categories, user_ui
                 }) : <div className='loader'></div>}
             </div>
         </div>
+        {!isVisitedSurveyPage ?
+                (
+                    <div ref={modelRef} id='modal' className='modal'>
+                        <div className='modal-content'>
+                            <h4>Для чего это страница?</h4>
+                            <p>
+                                Эта страница показывает прогресс вашей категории,<br/> 
+                                т.е расход в определленой категории или доход с нее.
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={handleClick} className="modal-close waves-effect waves-green btn-flat">Больше не показывать</button>
+                        </div>
+                    </div>
+                    ) : null}
+        </>
     );
 };
 

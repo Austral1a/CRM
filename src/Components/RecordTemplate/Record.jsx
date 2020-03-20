@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import '../../styles/otherStyles/loader.css';
 import '../../styles/RecordStyle/record.css';
+import prefillingTextInputs from '../../css-materialize animations/prefillingTextInput';
 
 import { getCategories, getUserBillValue } from '../../store/actions/index';
 
 import { connect } from 'react-redux';
 
 import firebase from 'firebase';
-
+import {modalAnimation, modalDestroy, modalOpen} from '../../css-materialize animations/modal';
 import { toastAnimation, toastAnimationDestroy } from '../../css-materialize animations/toast';
-
+import { setFirstVisitRecordsPage, getVisitedPages } from '../../store/actions/index';
 import PropTypes from 'prop-types';
 
 import { updateDb } from '../../store/actions/index';
@@ -18,6 +19,7 @@ const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
     categories: state.getCategoriesReducer.categories,
     get_categ_success: state.getCategoriesReducer.getCategoriesSuccess,
+    isVisitedRecordsPage: state.getVisitedPagesReducer.records_page,
 });
 const mapDispatchToProps = (dispatch) => ({
     getCategories: (user_uid) => {
@@ -28,6 +30,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
     updateDbWriteRecord: (user_uid) => {
         dispatch(updateDb(user_uid));
+    },
+    setFirstVisitRecordsPage: (user_uid) => {
+        dispatch(setFirstVisitRecordsPage(user_uid));
+    },
+    getVisitedPages: (user_uid) => {
+        dispatch(getVisitedPages(user_uid));
     }
 });
 
@@ -37,7 +45,10 @@ const ConnectedRecord = ({
     get_categ_success,
     getCategories,
     getBill,
-    updateDbWriteRecord
+    updateDbWriteRecord,
+    isVisitedRecordsPage,
+    getVisitedPages,
+    setFirstVisitRecordsPage
 }) => {
     const [selectValue, setSelectValue] = useState('');
     const [checkboxIncome, setCheckboxIncome] = useState(false);
@@ -46,6 +57,13 @@ const ConnectedRecord = ({
     const [amount, setAmount] = useState(0);
 
     const [selectCategKey, setSelectCategKey] = useState('');
+
+    const modelRef = useCallback(
+        (node) => {
+            if (node != null) {
+                modalAnimation(node);
+            };
+    }, []);
 
     const handleCurrCategory = useCallback(
         () => {
@@ -91,16 +109,32 @@ const ConnectedRecord = ({
     useEffect(() => {
         getCategories(user_uid);
         getBill(user_uid);
-    }, [user_uid, getCategories, getBill]);
+        getVisitedPages(user_uid);
+        if(amount !== '') {
+            prefillingTextInputs();
+        };
+        if (!isVisitedRecordsPage) {
+            if(get_categ_success) {
+                modalOpen();
+            };
+        };
+    }, [user_uid, getCategories, getBill, amount, getVisitedPages, get_categ_success,isVisitedRecordsPage]);
+
     useEffect(() => {
         handleCurrCategory();
-    }, [handleCurrCategory])
+    }, [handleCurrCategory]);
+
     useEffect(() => {
         return () => {
-            toastAnimationDestroy()
-        }
-    }, [])
+            toastAnimationDestroy();
+        };
+    }, []);
+
+    const handleClick = () => {
+        setFirstVisitRecordsPage(user_uid);
+    }
     return (
+        <>
         <div className='wrapper-record'>
             <div className="card custom-card-record">
                 <div className='card-content'>
@@ -167,6 +201,21 @@ const ConnectedRecord = ({
                 </div>
             </div>
         </div>
+        {!isVisitedRecordsPage ?
+                (
+                    <div ref={modelRef} id='modal' className='modal'>
+                        <div className='modal-content'>
+                            <h4>Для чего это страница?</h4>
+                            <p>
+                                Эта страница в которой вы можете добавлять расходы или доходы в нужную вам категорию, и также указывать описание.
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={handleClick} className="modal-close waves-effect waves-green btn-flat">Больше не показывать</button>
+                        </div>
+                    </div>
+                    ) : null}
+        </>
     );
 };
 

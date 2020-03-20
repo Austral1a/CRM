@@ -13,13 +13,13 @@ const fetchToFixerApiReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case GET_CURRENCIES_SUCCESS:
-            return Object.assign(state, {}, {
+            return Object.assign({}, state, {
                 isSuccess: true,
                 currencies: action.currencies,
                 error: '',
             });
         case GET_CURRENCIES_ERROR:
-            return Object.assign(state, {}, {
+            return Object.assign({}, state, {
                 isSuccess: false,
                 currencies: {},
                 error: action.error

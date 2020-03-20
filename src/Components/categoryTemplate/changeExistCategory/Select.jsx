@@ -144,7 +144,6 @@ const ConnectedCategorySelect = ({
     return (
         // temporary measure (select tag appearance)
         <>
-        {console.log(user_bill)}
             <select className="browser-default" value={selectCategName} onChange={handleChangeSelectName}>
                 <option defaultValue value="">Выберите один из вариантов</option>
                 {renderOptions()}

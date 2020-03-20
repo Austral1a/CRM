@@ -118,6 +118,9 @@ const ConnectedRecord = ({
                 modalOpen();
             };
         };
+        return () => {
+            modalDestroy();
+        }
     }, [user_uid, getCategories, getBill, amount, getVisitedPages, get_categ_success,isVisitedRecordsPage]);
 
     useEffect(() => {

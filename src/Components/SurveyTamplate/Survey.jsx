@@ -131,7 +131,10 @@ ConnectedSurvey.propTypes = {
     get_categ_success: PropTypes.bool.isRequired,
     categories: PropTypes.object.isRequired,
     user_uid: PropTypes.string.isRequired,
-    getCategories: PropTypes.func.isRequired
+    getCategories: PropTypes.func.isRequired,
+    isVisitedSurveyPage: PropTypes.bool.isRequired,
+    getVisitedPages: PropTypes.func.isRequired,
+    setFirstVisitSurveyPage: PropTypes.func.isRequired,
 }
 
 export default Survey;

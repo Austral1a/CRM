@@ -36,6 +36,9 @@ import { getUserBillValue } from '../../store/actions/index';
 //animation for toast 
 import { toastAnimation, toastAnimationDestroy } from '../../css-materialize animations/toast';
 //
+import {modalAnimation, modalDestroy, modalOpen} from '../../css-materialize animations/modal';
+import { setFirstVisitCategoryPage, getVisitedPages } from '../../store/actions/index';
+
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
     categories: state.getCategoriesReducer.categories,
@@ -47,6 +50,8 @@ const mapStateToProps = (state) => ({
     newLimit: state.newLimitCategoryReducer.newLimit,
 
     checkbox: state.setCategCheckboxReducer.isChecked,
+
+    isVisitedCategoryPage: state.getVisitedPagesReducer.category_page,
 
 });
 
@@ -60,6 +65,12 @@ const mapDispatchToProps = (dispatch) => ({
     getBill: (user_uid) => {
         dispatch(getUserBillValue(user_uid));
     },
+    setFirstVisitCategoryPage: (user_uid) => {
+        dispatch(setFirstVisitCategoryPage(user_uid));
+    },
+    getVisitedPages: (user_uid) => {
+        dispatch(getVisitedPages(user_uid));
+    }
 
 });
 const ConnectedCategory = ({
@@ -71,7 +82,18 @@ const ConnectedCategory = ({
     newName,
     newLimit,
     getBill ,
-    categories}) => {
+    categories,
+    setFirstVisitCategoryPage,
+    getVisitedPages,
+    isVisitedCategoryPage,
+}) => {
+
+    const modelRef = useCallback(
+        (node) => {
+            if (node != null) {
+                modalAnimation(node);
+            };
+    }, []);
 
     const [categNames, setCategNames] = useState([]);
     const updateDbAddNewCategory = () => {
@@ -120,12 +142,22 @@ const ConnectedCategory = ({
     useEffect(() => {
         getBill(user_uid);
         getCategories(user_uid);
+        getVisitedPages(user_uid);
+        if (!isVisitedCategoryPage) {
+            if(get_categ_success) {
+                modalOpen();
+            }
+        };
         return () => {
             toastAnimationDestroy();
+            modalDestroy();
         }
-    }, [getCategories, user_uid, getBill]);
-
+    }, [getCategories, user_uid, getBill, getVisitedPages, isVisitedCategoryPage, get_categ_success]);
+    const handleClick = () => {
+        setFirstVisitCategoryPage(user_uid);
+    }
     return (
+        <>
         <div className='wrapper-category'>
             <div className="card category-create">
                 <div className="card-content">
@@ -152,7 +184,22 @@ const ConnectedCategory = ({
                         : <div className='loader'></div>}
                 </div>
             </div>
-        </div >
+        </div>
+        {!isVisitedCategoryPage ?
+                (
+                    <div ref={modelRef} id='modal' className='modal'>
+                        <div className='modal-content'>
+                            <h4>Для чего это страница?</h4>
+                            <p>
+                                На этой странице вы можете создавать или редактировать категории.
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={handleClick} className="modal-close waves-effect waves-green btn-flat">Больше не показывать</button>
+                        </div>
+                    </div>
+                    ) : null}
+        </>
     );
 };
 
@@ -169,7 +216,11 @@ ConnectedCategory.propTypes = {
     get_categ_success: PropTypes.bool.isRequired,
     newName: PropTypes.string.isRequired,
     newLimit: PropTypes.string.isRequired,
-    getBill: PropTypes.func.isRequired
+    getBill: PropTypes.func.isRequired,
+    categories: PropTypes.object.isRequired,
+    setFirstVisitCategoryPage: PropTypes.func.isRequired,
+    getVisitedPages: PropTypes.func.isRequired,
+    isVisitedCategoryPage: PropTypes.bool.isRequired
 }
 
 export default Category;

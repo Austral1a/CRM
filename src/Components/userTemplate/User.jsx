@@ -119,7 +119,10 @@ ConnectedUser.propTypes = {
         PropTypes.object
     ]),
     user_uid: PropTypes.string.isRequired,
-    getBill: PropTypes.func.isRequired
+    getBill: PropTypes.func.isRequired,
+    setFirstVisitYouPage: PropTypes.func.isRequired,
+    isVisitedYouPage: PropTypes.bool.isRequired,
+    getVisitedPages: PropTypes.func.isRequired
 }
 
 export default User;

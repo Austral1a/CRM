@@ -234,6 +234,9 @@ ConnectedRecord.propTypes = {
     getCategories: PropTypes.func.isRequired,
     getBill: PropTypes.func.isRequired,
     updateDbWriteRecord: PropTypes.func.isRequired,
+    isVisitedRecordsPage: PropTypes.bool.isRequired,
+    getVisitedPages: PropTypes.func.isRequired,
+    setFirstVisitRecordsPage: PropTypes.func.isRequired,
 };
 
 export default Record;

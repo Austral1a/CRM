@@ -7,6 +7,7 @@ import CheckboxSortByCateg from './sortingComponents/sortByCateg';
 import {connect} from 'react-redux';
 import {modalAnimation, modalDestroy, modalOpen} from '../../css-materialize animations/modal';
 import { setFirstVisitHistoryPage, getVisitedPages } from '../../store/actions/index';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = (state) => {
     return {
@@ -97,5 +98,13 @@ const History = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(ConnectedHistory);
+
+ConnectedHistory.propTypes = {
+    get_records_success: PropTypes.bool.isRequired,
+    user_uid: PropTypes.string.isRequired,
+    isVisitedHistoryPage: PropTypes.bool.isRequired,
+    setFirstVisitHistoryPage: PropTypes.func.isRequired,
+    getVisitedPages: PropTypes.func.isRequired,
+}
 
 export default History;

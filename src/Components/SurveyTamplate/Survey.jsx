@@ -84,10 +84,10 @@ const ConnectedSurvey = ({
         <div className="wrapper-survey">
             <div className='categories-progress'>
                 <h4>Обзор категорий</h4>
-                {get_categ_success ? Object.values(categories).map((categ) => {
+                {categories ? get_categ_success ? Object.values(categories).map((categ) => {
                     return (
                         <React.Fragment key={categ.name}>
-                            {categ.total ?
+                            {categ.total >= 0 ?
                                 <>
                                     <h5>{categ.name}: {categ.limit - categ.total} грн из {categ.limit} грн</h5>
                                     <div ref={tooltipedRef}  data-position="bottom" data-tooltip={tooltipText(categ)} className="progress tooltipped">
@@ -100,7 +100,8 @@ const ConnectedSurvey = ({
                                 : <h5>В категории {categ.name} вы пока не добавляли записей</h5>}
                         </React.Fragment>
                     );
-                }) : <div className='loader'></div>}
+                }) : <div className='loader'></div>
+                : <h4>У вас пока нету ни одной категории</h4>}
             </div>
         </div>
         {!isVisitedSurveyPage ?
@@ -110,7 +111,8 @@ const ConnectedSurvey = ({
                             <h4>Для чего это страница?</h4>
                             <p>
                                 Эта страница показывает прогресс вашей категории,<br/> 
-                                т.е расход в определленой категории или доход с нее.
+                                т.е расход в определённой категории или доход с нее.
+                                Чем ближе вы к поставленому лимиту, тем полоска будет становится краснее.
                             </p>
                         </div>
                         <div className="modal-footer">

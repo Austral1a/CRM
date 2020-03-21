@@ -29,6 +29,7 @@ const ConnectedRecordsTable = ({
     records,
     getCategories,
     getRecords,
+    categories
 }) => {
 
     useEffect(() => {
@@ -49,7 +50,7 @@ const ConnectedRecordsTable = ({
                 </thead>
                 
                 <tbody>
-                    {Object.values(records).map((record, idx) => {
+                    {categories ? Object.values(records).map((record, idx) => {
                         return (
                             <tr key={idx}>
                                 <td>{idx + 1}</td>
@@ -59,7 +60,7 @@ const ConnectedRecordsTable = ({
                                 <td><p className={record.income ? 'income' : 'consumption'}>{record.income ? 'Доход' : 'Расход'}</p></td>
                             </tr>
                                 )
-                    })}
+                    }) : <h5>Пока никаких записей нету</h5>}
                 </tbody>
             </table>) : <div className='loader'></div>
     );

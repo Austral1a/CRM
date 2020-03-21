@@ -15,6 +15,7 @@ import { updateExistsCategoryLimit } from '../../../store/actions/index';
 import PropTypes from 'prop-types';
 import { toastAnimation, toastAnimationDestroy } from '../../../css-materialize animations/toast';
 import { getUserBillValue } from '../../../store/actions/index';
+import { toast } from 'materialize-css';
 const mapStateToProps = (state) => ({
     categories: state.getCategoriesReducer.categories,
     user_uid: state.currUserReducer.userUid,
@@ -68,7 +69,6 @@ const ConnectedCategorySelect = ({
                 if (categ.name === selectCategName) {
                     setSelectLimit(categ.limit);
                 }
-                return null;
             });
         }, [categories, selectCategName]);
 
@@ -78,69 +78,70 @@ const ConnectedCategorySelect = ({
                 if (categories[key].name === selectCategName) {
                     setSelectCategKey(key);
                 }
-                return null;
             })
         }, [categories, selectCategName]);
     const UpdateDbChangeCategory = () => {
-            if(selectCategName.trim() == '') {
-                toastAnimation('Выберете категорию');
-            } else if (changeLimitExistCateg == 0 || !changeLimitExistCateg) {
-                toastAnimation('Укажите корректный лимит');
-            } else if (+changeLimitExistCateg > +user_bill) {
-                toastAnimation('Вы не можете установить такой лимит, так-как у вас не столько денег счету');
-            } 
-            else {
-                let updateCategoriesNew = +changeLimitExistCateg;
-                    let updateCategoriesAdd = +selectCategLimit + +changeLimitExistCateg;
+        // 2 parts ( 1. If checkbox is true; 2. If checbkbox is false )
+        if(selectCategName.trim() == '') {
+            toastAnimation('Выберете категорию');
+        } else if (changeLimitExistCateg == 0 || !changeLimitExistCateg) {
+            toastAnimation('Укажите корректный лимит');
+        } else if (checkbox) {
+            if (+changeLimitExistCateg > +user_bill) {
+                toastAnimation(`У вас не столько нет столько денег на счету. Ваш счет - ${user_bill} грн`);
+            } else {
+                // update limit 
+                let updateCategoriesAdd = +selectCategLimit + +changeLimitExistCateg;
+                let updatesChangeCateg = {};
+                updatesChangeCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesAdd;
+                // udate bill
+                let updatesUpdateLimitChange = {}
+                updatesUpdateLimitChange['users/' + user_uid + '/info/bill'] = +user_bill - +changeLimitExistCateg;
+                try {
+                    updateDbFromSelect(updatesUpdateLimitChange);
+                    updateDbFromSelect(updatesChangeCateg);
+                    toastAnimation(`Категория ${selectCategName} была обновлена.`);
+                    changeExistsCategLimit('')
+                } catch {
+                    toastAnimation('Что-то пошло не так.');
+                }}
+            } else {
+                if(+user_bill < (+changeLimitExistCateg - +selectCategLimit)) {
+                    toastAnimation(`У вас не столько денег на счету. Ваш счет - ${user_bill} грн`);
+                } else {
+                    // update limit
+                    let updateCategoriesNew = +changeLimitExistCateg;
                     let updatesNewCateg = {};
-                    let updatesChangeCateg = {};
                     updatesNewCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesNew;
-                    updatesChangeCateg['users/' + user_uid + '/categories/' + selectCategKey + '/limit'] = updateCategoriesAdd;
-                    // update bill if user changing current category, and it will add residue to current bill
-                    let updatesUpdateLimitChange = {}; // true checkbox
-                    // we just subtract new limit from user bill because we just adding to an existing limit some value;  
-                    updatesUpdateLimitChange['users/' + user_uid + '/info/bill'] = +user_bill - +changeLimitExistCateg;
-                    let updatesUpdateLimitNew = {}; // false checkbbox
-                    // here a lil bit harder,
-                    // 1) but we are comparing new limit to a limit which already exists, 
-                    //  and if it's bigger (exist limit > new limit) then we subtract difference between new limit and an exist limit from user bill.
-                    // 2) that expression equals to the first one, but we are adding to user bill rather than subtracting
-                    updatesUpdateLimitNew['users/' + user_uid + '/info/bill'] = (+changeLimitExistCateg > +selectCategLimit) ?
-                        (user_bill - Math.abs(selectCategLimit - +changeLimitExistCateg)) :
-                        (user_bill + Math.abs(selectCategLimit - +changeLimitExistCateg));
-                    if (checkbox) {
-                            try {
-                                updateDbFromSelect(updatesChangeCateg);
-                                toastAnimation('Категория была успешно обновлена');
-                                updateDbFromSelect(updatesUpdateLimitChange);
-                                changeExistsCategLimit(0);
-                            } catch {
-                                toastAnimation('Что-то пошло не так');
-                            };
-                    } else {
-                            try {
-                                updateDbFromSelect(updatesNewCateg);
-                                toastAnimation('Категория была успешно обновлена');
-                                updateDbFromSelect(updatesUpdateLimitNew);
-                                changeExistsCategLimit(0);
-                            } catch {
-                                toastAnimation('Что-то пошло не так');
-                            };
+                    // update user_bill
+                    let updatesUpdateLimitNew = {};
+                    updatesUpdateLimitNew['users/' + user_uid + '/info/bill'] = +selectCategLimit > +changeLimitExistCateg  ? 
+                    +user_bill + (+selectCategLimit - +changeLimitExistCateg)
+                    :
+                    +user_bill - (+changeLimitExistCateg - +selectCategLimit);
+                    try {
+                        updateDbFromSelect(updatesNewCateg);
+                        updateDbFromSelect(updatesUpdateLimitNew);
+                        toastAnimation(`Категория ${selectCategName} была обновлена.`);
+                        changeExistsCategLimit('');
+                    } catch {
+                        toastAnimation('Что-то пошло не так.');
                     };
-                };
-            }
+                }
+            };
+        };
 
     useEffect(() => {
         getBill(user_uid);
         memoHandleChangeSelectLimit();
         memoHandleCurrCategory();
-    }, [memoHandleChangeSelectLimit, memoHandleCurrCategory, getBill, user_uid, user_bill])
+    }, [memoHandleChangeSelectLimit, memoHandleCurrCategory, getBill, user_uid, user_bill]);
 
     useEffect(() => {
         return () => {
             toastAnimationDestroy();
         }
-    }, [])
+    }, []);
     return (
         // temporary measure (select tag appearance)
         <>
@@ -161,7 +162,7 @@ const ConnectedCategorySelect = ({
             <button
                 onClick={UpdateDbChangeCategory}
                 className="waves-effect waves-light btn btn-small"
-            >Добавить</button>
+            >Изменить</button>
         </>
     );
 };

@@ -56,8 +56,8 @@ const ConnectedRegister = ({
         } else if (!emailValidate(email.trim())) {
             toastAnimation('Нужен корректный Email: email@mail.com');
         }
-        else if (password.trim() == '') {
-            toastAnimation('Введите пароль');
+        else if (password.trim() == '' || password.length < 6) {
+            toastAnimation('Введите пароль, должно быть как минимум 6 символов');
         } else if ( username.trim() == '') {
             toastAnimation('Имя пользователя должно содержать хотя-бы 1 символ');
         } else {
@@ -66,7 +66,7 @@ const ConnectedRegister = ({
                 const uid = getUid();
                 writeUserData(uid);
                 toastAnimation('Регистрация прошла успешно');
-                createVisitedPages(getUid());
+                await createVisitedPages(uid);
             } catch {
                 toastAnimation('Такой email уже существует');
             }
@@ -141,7 +141,8 @@ const Register = connect(
 )(ConnectedRegister);
 
 ConnectedRegister.propTypes = {
-    isUserAnonymous: PropTypes.bool.isRequired
+    isUserAnonymous: PropTypes.bool.isRequired,
+    createVisitedPages: PropTypes.func.isRequired,
 }
 
 export default Register

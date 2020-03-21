@@ -24,11 +24,12 @@ const Sidebar = () => {
             };
         }, []);
 
-    useEffect(()  => {
-        return () => {
-            sidenavDestroy();
-        }
-    })
+        useEffect(() => {
+            return () => {
+                sidenavDestroy();
+            }
+        }, []);
+
     return (
         <>
             <ul id="slide-out" ref={sidenavRef} className="sidenav">

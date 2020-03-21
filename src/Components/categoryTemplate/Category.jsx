@@ -38,6 +38,8 @@ import { toastAnimation, toastAnimationDestroy } from '../../css-materialize ani
 //
 import {modalAnimation, modalDestroy, modalOpen} from '../../css-materialize animations/modal';
 import { setFirstVisitCategoryPage, getVisitedPages } from '../../store/actions/index';
+import { setNewCategoryLimit, setNewCategoryName } from '../../store/actions/index';
+
 
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
@@ -70,6 +72,12 @@ const mapDispatchToProps = (dispatch) => ({
     },
     getVisitedPages: (user_uid) => {
         dispatch(getVisitedPages(user_uid));
+    },
+    setLimit: (limit) => {
+        dispatch(setNewCategoryLimit(limit));
+    },
+    setName: (name) => {
+        dispatch(setNewCategoryName(name));
     }
 
 });
@@ -86,6 +94,8 @@ const ConnectedCategory = ({
     setFirstVisitCategoryPage,
     getVisitedPages,
     isVisitedCategoryPage,
+    setLimit,
+    setName
 }) => {
 
     const modelRef = useCallback(
@@ -123,6 +133,8 @@ const ConnectedCategory = ({
                 updateDb(updatesNewCateg);
                 toastAnimation('Новая категория была успешно добавлена');
                 updateDb(updatesNewBill);
+                setLimit('');
+                setName('');
             } catch {
                 toastAnimation('Что-то пошло не так');
             };
@@ -192,6 +204,9 @@ const ConnectedCategory = ({
                             <h4>Для чего это страница?</h4>
                             <p>
                                 На этой странице вы можете создавать или редактировать категории.
+                                Для того что-бы создать категорию, в форме с левой стороны введите название и ниже в поле ее лимит.
+                                Что-бы изменить категорию, с правой стороны выбирите одну из них и введите новый лимит, или добавьте
+                                к текущему включив переключатель под кнопкой "Изменить". 
                             </p>
                         </div>
                         <div className="modal-footer">
@@ -220,7 +235,9 @@ ConnectedCategory.propTypes = {
     categories: PropTypes.object.isRequired,
     setFirstVisitCategoryPage: PropTypes.func.isRequired,
     getVisitedPages: PropTypes.func.isRequired,
-    isVisitedCategoryPage: PropTypes.bool.isRequired
+    isVisitedCategoryPage: PropTypes.bool.isRequired,
+    setLimit: PropTypes.func.isRequired,
+    setName: PropTypes.func.isRequired,
 }
 
 export default Category;

@@ -76,34 +76,46 @@ const ConnectedRecord = ({
 
     const writeRecordDb = () => {
         handleCurrCategory();
-        let postDataIncome = {
-            income: +amount,
-            descrtiption: descript,
-            category: categories[selectCategKey].name,
-            time: dateFilter(new Date(), ['historyDate', 'time']),
+        if(selectValue == '') {
+            toastAnimation('Укажите категорию, или создайте');
+        } else if(+amount <= 0) {
+            toastAnimation('Введите сумму большую нуля');
+        } else if (descript.trim() == '') {
+            toastAnimation('Напишите пожалуйста какое-либо описание к вашей записи');
+        } else {
+            let postDataIncome = {
+                income: +amount,
+                descrtiption: descript,
+                category: categories[selectCategKey].name,
+                time: dateFilter(new Date(), ['historyDate', 'time']),
+            };
+            let postDataConsumption = {
+                consumption: +amount,
+                descrtiption: descript,
+                category: categories[selectCategKey].name,
+                time: dateFilter(new Date(), ['historyDate', 'time']),
+            };
+            let postKey = firebase.database().ref().child(selectCategKey).push().key;
+            let updates = {};
+            let updatesRecordAmout = {};
+            try {
+                updates['users/' + user_uid + '/categories/records/' + postKey] = checkboxIncome ? postDataIncome : postDataConsumption;
+                updateDbWriteRecord(updates);
+    
+                updatesRecordAmout['users/' + user_uid + '/categories/' + selectCategKey + '/total'] = checkboxIncome ?
+                    (categories[selectCategKey].total ? categories[selectCategKey].total + +amount : categories[selectCategKey].limit + +amount)
+                    :
+                    (categories[selectCategKey].total ? categories[selectCategKey].total - +amount : categories[selectCategKey].limit - +amount);
+                updateDbWriteRecord(updatesRecordAmout);
+                toastAnimation('Запись была успешно добавлена');
+                setDescript('');
+                setAmount(0);
+            } catch {
+                toastAnimation('Что-то пошло не так');
+                setDescript('');
+                setAmount(0);
+            };
         };
-        let postDataConsumption = {
-            consumption: +amount,
-            descrtiption: descript,
-            category: categories[selectCategKey].name,
-            time: dateFilter(new Date(), ['historyDate', 'time']),
-        };
-        let postKey = firebase.database().ref().child(selectCategKey).push().key;
-        let updates = {};
-        let updatesRecordAmout = {};
-        try {
-            updates['users/' + user_uid + '/categories/records/' + postKey] = checkboxIncome ? postDataIncome : postDataConsumption;
-            updateDbWriteRecord(updates);
-
-            updatesRecordAmout['users/' + user_uid + '/categories/' + selectCategKey + '/total'] = checkboxIncome ?
-                (categories[selectCategKey].total ? categories[selectCategKey].total + +amount : categories[selectCategKey].limit + +amount)
-                :
-                (categories[selectCategKey].total ? categories[selectCategKey].total - +amount : categories[selectCategKey].limit - +amount);
-            updateDbWriteRecord(updatesRecordAmout);
-            toastAnimation('Запись была успешно добавлена');
-        } catch {
-            toastAnimation('Что-то пошло не так');
-        }
     };
 
     useEffect(() => {
@@ -121,7 +133,7 @@ const ConnectedRecord = ({
         return () => {
             modalDestroy();
         }
-    }, [user_uid, getCategories, getBill, amount, getVisitedPages, get_categ_success,isVisitedRecordsPage]);
+    }, [user_uid, getCategories, getBill, amount, getVisitedPages, get_categ_success,isVisitedRecordsPage, ]);
 
     useEffect(() => {
         handleCurrCategory();
@@ -148,7 +160,7 @@ const ConnectedRecord = ({
                                 value={selectValue}
                                 className='browser-default'
                                 onChange={(e) => setSelectValue(e.target.value)}>
-                                <option defaultValue value="">Выберите категорию</option>
+                                <option defaultValue value="">Выберите категорию</option> 
                                 {Object.values(categories).map((categ) => {
                                     return <option key={categ.name} value={categ.name}>{categ.name}</option>
                                 })}
@@ -211,6 +223,7 @@ const ConnectedRecord = ({
                             <h4>Для чего это страница?</h4>
                             <p>
                                 Эта страница в которой вы можете добавлять расходы или доходы в нужную вам категорию, и также указывать описание.
+                                Записи ни как не влияют на ваш счет, вы можете превысить лимит или наоборот "сделать" категорию прибыльной.
                             </p>
                         </div>
                         <div className="modal-footer">

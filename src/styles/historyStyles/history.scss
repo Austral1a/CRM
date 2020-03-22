@@ -23,16 +23,9 @@ $table-filter-back-color: #5468B5;
     background-color: #FFBC3E !important;
 }
 table {
-    width: 95% !important;
     color: #fff;
     font-size: 1.3rem;
-    thead {
-        th {
-            padding-top: 0 !important;
-        }
-    }
     tbody {
-        display: block;
         max-height: 400px !important;
         overflow-y: auto;
     }
@@ -41,11 +34,6 @@ table {
     };
 };
 
-table, thead, tbody, tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
 
 .income {
     @include arrivingColorType($income: true);

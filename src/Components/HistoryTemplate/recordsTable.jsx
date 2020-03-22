@@ -37,7 +37,7 @@ const ConnectedRecordsTable = ({
     }, [getCategories, getRecords, user_uid]);
     return (
             get_records_success ? (
-                <table>
+                <table className="responsive-table">
                     <thead>
                         <tr>
                         <th>#</th>
@@ -45,7 +45,6 @@ const ConnectedRecordsTable = ({
                         <th>Дата</th>
                         <th>Категория</th>
                         <th>Тип</th>
-                        <th>Описание</th>
                         </tr>
                     </thead>
                     

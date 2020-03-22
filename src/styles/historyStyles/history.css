@@ -13,29 +13,17 @@
 }
 
 table {
-  width: 95% !important;
   color: #fff;
   font-size: 1.3rem;
 }
 
-table thead th {
-  padding-top: 0 !important;
-}
-
 table tbody {
-  display: block;
   max-height: 400px !important;
   overflow-y: auto;
 }
 
 table tr {
   border-color: #fff;
-}
-
-table, thead, tbody, tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
 }
 
 .income {

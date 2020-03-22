@@ -58,6 +58,7 @@ const ConnectedUser = ({
             };
     }, []);
     useEffect(() => {
+        document.title = 'You | Wallet'
         getVisitedPages(user_uid);
         getBill(user_uid);
         getUsername(user_uid);

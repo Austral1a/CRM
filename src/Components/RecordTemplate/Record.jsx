@@ -136,6 +136,7 @@ const ConnectedRecord = ({
     }, [user_uid, getCategories, getBill, amount, getVisitedPages, get_categ_success,isVisitedRecordsPage, ]);
 
     useEffect(() => {
+        document.title = 'Record | Wallet'
         handleCurrCategory();
     }, [handleCurrCategory]);
 

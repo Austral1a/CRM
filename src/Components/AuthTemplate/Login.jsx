@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/templatesStyle/auth.css'
 import 'firebase/auth';
 import {
@@ -31,7 +31,9 @@ const mapDispatchToProps = (dispatch) => {
 const ConnectedLogin = ({ signUserIn, currUser, error, isUserLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    useEffect(() => {
+        document.title = 'Login | Wallet'
+    }, [])
     return (
         <>
                 <div className="wrapper-login-register">

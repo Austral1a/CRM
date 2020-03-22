@@ -53,6 +53,7 @@ const ConnectedSurvey = ({
     }, []);
 
     useEffect(() => {
+        document.title = 'Survey | Wallet'
         getCategories(user_uid);
         getVisitedPages(user_uid);
         if (!isVisitedSurveyPage) {

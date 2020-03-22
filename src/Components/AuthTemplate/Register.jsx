@@ -72,8 +72,8 @@ const ConnectedRegister = ({
             }
         };
     };
-
     useEffect(() => {
+        document.title = 'Register | Wallet'
         return () => {
             toastAnimationDestroy();
         }

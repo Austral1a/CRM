@@ -83,6 +83,7 @@ const ConnectedBill = ({
     }, []);
 
     useEffect(() => {
+        document.title = 'Bill | Wallet'
         getCurrencies();
         getBill(user_uid);
         getVisitedPages(user_uid);

@@ -152,6 +152,7 @@ const ConnectedCategory = ({
         getCategNames()
     }, [getCategNames])
     useEffect(() => {
+        document.title = 'Categories | Wallet'
         getBill(user_uid);
         getCategories(user_uid);
         getVisitedPages(user_uid);

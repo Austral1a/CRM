@@ -43,6 +43,7 @@ const ConnectedHistory = ({
     }, []);
 
     useEffect(() => {
+        document.title = 'History | Wallet'
         getVisitedPages(user_uid)
         if (!isVisitedHistoryPage) {
             if(get_records_success) {

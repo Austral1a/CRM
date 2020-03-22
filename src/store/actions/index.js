@@ -199,7 +199,8 @@ export const setCategoryCheckboxFalse = () => ({
 export const fetchFixer = () => {
     return async (dispatch) => {
         try {
-            const res = await fetch(`http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
+            const proxy = 'https://cors-anywhere.herokuapp.com/'
+            const res = await fetch(`${proxy}http://data.fixer.io/api/latest?access_key=${process.env.REACT_APP_FIXER_API}&symbols=USD,PLN,EUR,RUB,UAH`);
             let data = await res.json();
             data = data.rates;
             dispatch(fetchFixerSuccess(data));

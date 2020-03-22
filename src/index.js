@@ -12,7 +12,7 @@ import store from './store/index';
 // TODO: Заныкать config
 const firebaseConfig = {
     apiKey: "AIzaSyClWeGiKPJOiS99S0cS1WyvvRluLpcevWM",
-    authDomain: "react-crm-sys.firebaseapp.com",
+    authDomain: process.env.FB_API_KEY,
     databaseURL: "https://react-crm-sys.firebaseio.com",
     projectId: "react-crm-sys",
     storageBucket: "react-crm-sys.appspot.com",

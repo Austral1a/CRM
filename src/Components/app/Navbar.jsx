@@ -21,7 +21,6 @@ const mapStateToProps = (state) => {
     return {
         user: state.currUserReducer.user,
         isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
-        isUserAnonymous: state.currUserReducer.isUserAnonymous,
     };
 };
 
@@ -35,7 +34,6 @@ let ConnectedNavbar = ({
     currUser, 
     user, 
     isUserLoggedIn,
-    isUserAnonymous
  }) => {
     const [currDateTime, setCurrDateTime] = useState('');
     useEffect(() => {
@@ -53,7 +51,7 @@ let ConnectedNavbar = ({
     }, [])
     return (
         <nav className="nav-extend teal">
-            {!isUserAnonymous ? <div className="nav-content">
+            {isUserLoggedIn ? <div className="nav-content">
                 <ul>
                     <li className="left">
                         <a
@@ -76,16 +74,8 @@ let ConnectedNavbar = ({
                             interactions)}>
                         {String(currDateTime)}
                     </Profiler>
-                    {isUserAnonymous ? (
-                        <>
-                            <li className="right">
-                                <Link exact='true' to='/login'>Login</Link>
-                            </li>
-                            <li className="right">
-                                <Link exact='true' to="/register">Register</Link>
-                            </li>
-                        </>
-                    ) : (<>
+                    {!isUserLoggedIn ? null
+                     : (<>
                         <li className='right'><button
                             className='waves-effect waves-teal btn-small'
                             onClick={() => {
@@ -121,7 +111,7 @@ ConnectedNavbar.propTypes = {
         PropTypes.string,
         PropTypes.object
     ]),
-    isUserAnonymous: PropTypes.bool.isRequired,
+    isUserLoggedIn: PropTypes.bool.isRequired,
 }
 
 export default Navbar;

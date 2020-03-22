@@ -16,7 +16,12 @@ import User from '../userTemplate/User';
 import Category from '../categoryTemplate/Category';
 import Survey from '../SurveyTamplate/Survey';
 import History from '../HistoryTemplate/History';
-const Sidebar = () => {
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+const mapStateToProps = (state) => ({
+    isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
+});
+const ConnecterSidebar = ({isUserLoggedIn}) => {
     const sidenavRef = useCallback(
         (node) => {
             if (node != null) {
@@ -41,27 +46,36 @@ const Sidebar = () => {
                 <li><Link onClick={sidenavClose} className='waves=effect waves-teal' to="/survey">Обзор</Link></li>
             </ul>
             <Switch>
-                <Route path="/you">
-                    <User user_email='email or username' />
-                </Route>
-                <Route path='/history'>
-                    <History />
-                </Route>
-                <Route path="/bill">
-                    <Bill />
-                </Route>
-                <Route path="/category">
-                    <Category />
-                </Route>
-                <Route path="/records">
-                    <Record />
-                </Route>
-                <Route path="/survey">
-                    <Survey />
-                </Route>
+                {isUserLoggedIn ?
+                <>
+                    <Route path="/you">
+                        <User user_email='email or username' />
+                    </Route>
+                    <Route path='/history'>
+                        <History />
+                    </Route>
+                    <Route path="/bill">
+                        <Bill />
+                    </Route>
+                    <Route path="/category">
+                        <Category />
+                    </Route>
+                    <Route path="/records">
+                        <Record />
+                    </Route>
+                    <Route path="/survey">
+                        <Survey />
+                    </Route>
+                </>
+                    : null}
             </Switch>
         </>
     )
+}
+const Sidebar = connect(mapStateToProps)(ConnecterSidebar);
+
+ConnecterSidebar.propTypes = {
+    isUserLoggedIn: PropTypes.bool.isRequired
 }
 
 export default Sidebar;

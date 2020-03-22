@@ -23,6 +23,7 @@ import PropTypes from 'prop-types';
 import { getUserBillValue } from '../../store/actions/index';
 import { fetchFixer } from '../../store/actions/index';
 //
+import symbols from  '../../filters/currenciesSignsFilter.json';
 
 // bill amount html block
 import BillAmount from './BillAmount';
@@ -119,8 +120,8 @@ const ConnectedBill = ({
                                     return (
                                         <tr key={currency}>
                                             <td key={currencies[currency]}>{currency}</td>
-                                            <td key={Math.random()}>{toFixed(user_bill / (currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
-                                            <td key={Math.random()}>{toFixed((currencies['UAH'] / currencies[currency]), 3)} <small>{currency}</small></td>
+                                            <td key={Math.random()}>{toFixed(user_bill / (currencies['UAH'] / currencies[currency]), 3)} {symbols[currency]}</td>
+                                            <td key={Math.random()}>{toFixed((currencies['UAH'] / currencies[currency]), 3)} {symbols[currency]}</td>
                                         </tr>
                                     )
                                 })}

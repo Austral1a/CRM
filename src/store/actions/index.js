@@ -27,12 +27,6 @@ import {
     SET_SELECT_SORT_BY_CATEG,
     GET_USERNAME_SUCCESS,
     GET_USERNAME_ERROR,
-    FIRST_VISIT_YOU_PAGE,
-    FIRST_VISIT_HISTORY_PAGE,
-    FIRST_VISIT_BILL_PAGE,
-    FIRST_VISIT_CATEGORY_PAGE,
-    FIRST_VISIT_RECORDS_PAGE,
-    FIRST_VISIT_SURVEY_PAGE,
     GET_VISITED_PAGES_SUCCESS,
     GET_VISITED_PAGES_ERROR,
     CREATE_VISITED_PAGES_SUCCESS,
@@ -66,7 +60,7 @@ export const signInUserSuccess = () => ({
 // chech if the user is logged in.
 export const currentSignedInUser = () => {
     return (dispatch) => {
-        firebase.auth().onAuthStateChanged((user) => {
+       firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 dispatch(currentUserNotAnonymous(user));
             } else {

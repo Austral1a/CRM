@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {getCategories, getCategRecords} from '../../store/actions/index';
 import '../../styles/otherStyles/loader.css';
 import PropTypes from 'prop-types';
-
 const mapStateToProps = (state) => ({
     user_uid: state.currUserReducer.userUid,
     get_records_success: state.getCategRecordsReducer.get_records_success,
@@ -37,32 +36,33 @@ const ConnectedRecordsTable = ({
         getRecords(user_uid);
     }, [getCategories, getRecords, user_uid]);
     return (
-        get_records_success ? (
-            <table>
-                <thead>
-                    <tr>
-                    <th>#</th>
-                    <th>Сумма</th>
-                    <th>Дата</th>
-                    <th>Категория</th>
-                    <th>Тип</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    {categories ? Object.values(records).map((record, idx) => {
-                        return (
-                            <tr key={idx}>
-                                <td>{idx + 1}</td>
-                                <td>{record.income ? record.income : record.consumption}</td>
-                                <td>{record.time}</td>
-                                <td>{record.category}</td>
-                                <td><p className={record.income ? 'income' : 'consumption'}>{record.income ? 'Доход' : 'Расход'}</p></td>
-                            </tr>
-                                )
-                    }) : <h5>Пока никаких записей нету</h5>}
-                </tbody>
-            </table>) : <div className='loader'></div>
+            get_records_success ? (
+                <table>
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Сумма</th>
+                        <th>Дата</th>
+                        <th>Категория</th>
+                        <th>Тип</th>
+                        <th>Описание</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {Object.keys(categories).length !== 0 && categories.constructor == Object ? Object.values(records).map((record, idx) => {
+                            return (
+                                    <tr key={idx}>
+                                        <td>{idx + 1}</td>
+                                        <td>{record.income ? record.income : record.consumption}</td>
+                                        <td>{record.time}</td>
+                                        <td>{record.category}</td>
+                                        <td><p className={record.income ? 'income' : 'consumption'}>{record.income ? 'Доход' : 'Расход'}</p></td>
+                                    </tr>
+                                    )
+                        }) : <tr><td>Пока никаких записей нету</td></tr>}
+                    </tbody>
+                </table>) : <div className='loader'></div>
     );
 };
 

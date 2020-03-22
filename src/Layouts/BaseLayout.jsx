@@ -13,16 +13,18 @@ import Navbar from '../Components/app/Navbar';
 import Sidebar from '../Components/app/Sidebar';
 import User from '../Components/userTemplate/User';
 import '../store/reducers/index';
-
+import '../styles/otherStyles/loader.css';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
     return {
         isUserAnonymous: state.currUserReducer.isUserAnonymous,
+        isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
     };
 };
 
-const ConnectedBaseTemplate = ({isUserLoggedIn, isUserAnonymous}) => {
+const ConnectedBaseTemplate = ({ isUserLoggedIn, isUserAnonymous}) => {
     return (
         <Router>
             <Navbar />
@@ -30,14 +32,19 @@ const ConnectedBaseTemplate = ({isUserLoggedIn, isUserAnonymous}) => {
             <Switch>
                 <Route path="/login" component={Login}></Route>
                 <Route path="/register" component={Register}></Route>
-                {!isUserAnonymous ? <Route exact path='/' component={User}></Route> : <Redirect from={/[a-zA-Z]/} to='/login' component={Login}></Redirect>}
+                {isUserLoggedIn ? <Route exact path='/' component={User}></Route> : null}
+                {isUserAnonymous ? <Redirect from='/' to='/login'></Redirect> : null}
             </Switch>
-        </Router>
-    );
+        </Router>)
 };
 
 const BaseTemplate = connect(
     mapStateToProps
 )(ConnectedBaseTemplate);
+
+ConnectedBaseTemplate.propTypes = {
+    isUserAnonymous: PropTypes.bool.isRequired,
+    isUserLoggedIn: PropTypes.bool.isRequired
+}
 
 export default BaseTemplate;

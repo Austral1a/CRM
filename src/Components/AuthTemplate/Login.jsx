@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 const mapStateToProps = (state) => {
     return {
         error: state.signInReducer.error,
-        isUserAnonymous: state.currUserReducer.isUserAnonymous,
+        isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
     }
 };
 
@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const ConnectedLogin = ({ signUserIn, currUser, error, isUserAnonymous }) => {
+const ConnectedLogin = ({ signUserIn, currUser, error, isUserLoggedIn }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -71,7 +71,7 @@ const ConnectedLogin = ({ signUserIn, currUser, error, isUserAnonymous }) => {
                 </div>
             <Switch>
                 <Route path="/login">
-                    {!isUserAnonymous ? <Redirect to='/you' /> : null}
+                    {isUserLoggedIn ? <Redirect to='/you' /> : null}
                 </Route>
             </Switch>
         </>
@@ -80,7 +80,9 @@ const ConnectedLogin = ({ signUserIn, currUser, error, isUserAnonymous }) => {
 
 ConnectedLogin.propTypes = {
     error: PropTypes.string.isRequired,
-    isUserAnonymous: PropTypes.bool.isRequired
+    isUserLoggedIn: PropTypes.bool.isRequired,
+    signUserIn: PropTypes.func.isRequired,
+    currUser: PropTypes.func.isRequired
 }
 
 const Login = connect(

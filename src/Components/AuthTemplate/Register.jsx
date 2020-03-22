@@ -13,7 +13,7 @@ import {createVisitedPages} from '../../store/actions/index';
 import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
     return {
-        isUserAnonymous: state.currUserReducer.isUserAnonymous,
+        isUserLoggedIn: state.currUserReducer.isUserLoggedIn,
     };
 };
 
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const ConnectedRegister = ({ 
-    isUserAnonymous,
+    isUserLoggedIn,
     createVisitedPages,
      }) => {
     const [email, setEmail] = useState('');
@@ -128,7 +128,7 @@ const ConnectedRegister = ({
             </div>
             <Switch>
                 <Route path="/register">
-                    {!isUserAnonymous ? <Redirect to='/you' /> : null}
+                    {isUserLoggedIn ? <Redirect to='/you' /> : null}
                 </Route>
             </Switch>
         </>
@@ -141,7 +141,7 @@ const Register = connect(
 )(ConnectedRegister);
 
 ConnectedRegister.propTypes = {
-    isUserAnonymous: PropTypes.bool.isRequired,
+    isUserLoggedIn: PropTypes.bool.isRequired,
     createVisitedPages: PropTypes.func.isRequired,
 }
 

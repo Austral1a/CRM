@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "AAAA,AAAA,oBAAoB,CAAC;EACjB,MAAM,EAAE,eAAe;CAC1B",
+    "mappings": "AAAA,AAAA,oBAAoB,CAAC;EACjB,MAAM,EAAE,eAAe;CAC1B;;AACD,AAAA,YAAY,AAAA,OAAO,CAAC;EAChB,MAAM,EAAE,eAAe;CAC1B",
     "sources": [
         "survey.scss"
     ],

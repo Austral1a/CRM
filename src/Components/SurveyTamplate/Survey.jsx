@@ -84,20 +84,21 @@ const ConnectedSurvey = ({
         <div className="wrapper-survey">
             <div className='categories-progress'>
                 <h4>Обзор категорий</h4>
-                {categories ? get_categ_success ? Object.values(categories).map((categ) => {
+                {console.log(categories)}
+                {Object.keys(categories).length > 0 ? get_categ_success ? Object.values(categories).map((categ) => {
                     return (
                         <React.Fragment key={categ.name}>
-                            {categ.total >= 0 ?
-                                <>
-                                    <h5>{categ.name}: {categ.limit - categ.total} грн из {categ.limit} грн</h5>
-                                    <div ref={tooltipedRef}  data-position="bottom" data-tooltip={tooltipText(categ)} className="progress tooltipped">
-                                        <div className="determinate" style={{
-                                            width: ((categ.limit - categ.total) / categ.limit) * 100 + '%',
-                                            backgroundColor: `rgb(170,${255 - ((((categ.limit - categ.total) / categ.limit) * 100) * 2.5)},0)`
-                                        }}></div>
-                                    </div>
-                                </>
-                                : <h5>В категории {categ.name} вы пока не добавляли записей</h5>}
+                                   {categ.total ? 
+                                    <>
+                                        <h5>{categ.name}: {categ.limit - categ.total} грн из {categ.limit} грн</h5>
+                                        <div ref={tooltipedRef}  data-position="bottom" data-tooltip={tooltipText(categ)} className="progress tooltipped">
+                                            <div className="determinate" style={{
+                                                width: ((categ.limit - categ.total) / categ.limit) * 100 + '%',
+                                                backgroundColor: `rgb(${255},${255 - ((((categ.limit - categ.total) / categ.limit) * 100) * 2.5)},0)`
+                                            }}></div>
+                                        </div>
+                                    </>
+                                        : <h5>В категории {categ.name} записей пока нет.</h5>}
                         </React.Fragment>
                     );
                 }) : <div className='loader'></div>
